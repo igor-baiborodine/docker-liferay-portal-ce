@@ -1,0 +1,31 @@
+language: bash
+services: docker
+
+env:
+  global:
+    - secure: TODO
+    - REPO=docker-liferay-portal-ce
+  matrix:
+
+install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - git clone https://github.com/docker-library/official-images.git ~/official-images
+
+before_script:
+  - image="$DOCKER_USERNAME/$REPO:$VERSION-$VARIANT"
+
+script:
+  - |
+    (
+      set -Eeuo pipefail
+      set -x
+      docker build -t "$image" ./"$VERSION/$VARIANT"
+      ~/official-images/test/run.sh "$image"
+      docker push "$image"
+      ./generate-readme.sh "$VERSION/$VARIANT" "$TRAVIS_COMMIT"
+      git status
+    )
+
+after_success:
+  - docker images
+  - ./push-remote.sh
