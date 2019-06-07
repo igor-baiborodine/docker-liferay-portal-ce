@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -e
 
 if [[ "$(ls -A $LIFERAY_BASE)" ]]; then
     if [[ -d "$LIFERAY_BASE/tomcat" ]]; then
