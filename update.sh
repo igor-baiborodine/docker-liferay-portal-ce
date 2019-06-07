@@ -1,106 +1,92 @@
 #!/usr/bin/env bash
-
 set -eo pipefail
 
-get_full_version() {
-  local release_version="$1"
+supported_tag="$1"
+echo "supported_tag: $supported_tag"
 
-  echo "$(
-		curl -fsSL --compressed "https://releases.liferay.com/portal/$release_version/" \
-			| grep -E '<a href="liferay-ce-portal-tomcat-'"$release_version"'-[0-9]+.tar.gz.MD5' \
-			| sed -r 's!.*<a href="liferay-ce-portal-tomcat-([^"/]+)/?.tar.gz".*!\1!'
-	)"
-}
+if [[ -d "$supported_tag" ]]; then
+  echo "Already supported tag: $supported_tag"
+  exit 1
+fi
 
-get_md5() {
-  local release_version="$1"
-  local full_version="$2"
+version="$supported_tag"
+release_version="${version%%/*}"
+variant="$(basename "$version")"
+java_variant="${variant%%-*}"
 
-	echo "$(
-		curl -fsSL "https://releases.liferay.com/portal/$release_version/liferay-ce-portal-tomcat-$full_version.tar.gz.MD5" \
-			| cut -d' ' -f1
-	)"
-}
+if [[ "$java_variant" != jdk* ]]; then
+  echo "Not supported Java variant: $java_variant"
+  exit 1
+fi
 
-main() {
-  local supported_tag="$1"
-  echo "supported_tag: $supported_tag"
+sub_variant="${variant#$java_variant-}"
 
-  if [[ -d "$supported_tag" ]]; then
-    echo "Already supported tag: $supported_tag"
-    exit 1
-  fi
+if [[ ! (${sub_variant} == alpine || ${sub_variant} == slim) ]] ; then
+  echo "Not supported sub-variant: $sub_variant"
+  exit 1
+fi
 
-  local version="$supported_tag"
-  local release_version="${version%%/*}"
-  local variant="$(basename "$version")"
-  local java_variant="${variant%%-*}"
+echo "Parsed supported_tag {
+  release_version: $release_version
+  variant: $variant
+  java_variant: $java_variant
+  sub_variant: $sub_variant
+}"
 
-  if [[ "$java_variant" != jdk* ]]; then
-    echo "Not supported Java variant: $java_variant"
-    exit 1
-  fi
+full_version=$(
+  curl -fsSL --compressed "https://releases.liferay.com/portal/$release_version/" \
+    | grep -E '<a href="liferay-ce-portal-tomcat-'"$release_version"'-[0-9]+.tar.gz.MD5' \
+    | sed -r 's!.*<a href="liferay-ce-portal-tomcat-([^"/]+)/?.tar.gz.MD5".*!\1!'
+)
+download_url="https://releases.liferay.com/portal/$release_version/liferay-ce-portal-tomcat-$full_version.tar.gz"
+echo "download_url: $download_url"
 
-  local sub_variant="${variant#$java_variant-}"
+md5=$(
+  curl -fsSL "$download_url.MD5" \
+    | cut -d' ' -f1
+)
+echo "md5: $md5"
 
-  if [[ ! (${sub_variant} == alpine || ${sub_variant} == slim) ]] ; then
-    echo "Not supported sub-variant: $sub_variant"
-    exit 1
-  fi
+echo "Adding Dockerfile for $release_version/$variant"
+mkdir -p "$release_version/$variant"
 
-  echo "Version {
-    release_version: $release_version
-    variant: $variant
-    java_variant: $java_variant
-    sub_variant: $sub_variant
-  }"
+base_image="openjdk:${java_variant:3}-${java_variant:0:3}${sub_variant:+-$sub_variant}" # ":8-jdk-alpine", ":11-jdk-slim"
+echo "base_image:$base_image"
 
-  local full_version=$(get_full_version "$release_version")
-  local md5=$(get_md5 "$release_version" "$full_version")
+sed -r \
+  -e 's/^(FROM) .*/\1 '"$base_image"'/g' \
+  -e 's#^(ENV LIFERAY_PORTAL_CE_DOWNLOAD_URL) .*#\1 '"$download_url"'#' \
+  -e 's/^(ENV LIFERAY_PORTAL_CE_VERSION) .*/\1 '"$release_version"'/' \
+  -e 's/^(ENV LIFERAY_PORTAL_CE_MD5) .*/\1 '"$md5"'/' \
+  "Dockerfile${sub_variant:+-$sub_variant}.template" \
+  > "$release_version/$variant/Dockerfile"
 
-  echo "Adding Dockerfile for $release_version/$variant"
-  mkdir -p "$release_version/$variant"
+cp -a docker-entrypoint.sh "$release_version/$variant/"
 
-  local base_image="openjdk:${java_variant:3}-${java_variant:0:3}${sub_variant:+-$sub_variant}" # ":8-jdk-alpine", ":11-jdk-slim"
-  echo "base_image:$base_image"
+travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$release_version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
+echo "Modifying .travis.yml with new VERSION-VARIANT[$release_version-$variant]"
+echo "$travis" > .travis.yml
 
-  sed -r \
-      -e 's/^(ENV APP_VERSION) .*/\1 '"$release_version"'/' \
-      -e 's/^(FROM) .*/\1 '"$base_image"'/' \
-      "Dockerfile${sub_variant:+-$sub_variant}.template" \
-      > "$release_version/$variant/Dockerfile"
-
-  cp -a docker-entrypoint.sh "$release_version/$variant/"
-
-  local travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$release_version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
-  echo "Modifying .travis.yml with new VERSION-VARIANT[$release_version-$variant]"
-  echo "$travis" > .travis.yml
-
-  if [[ -f ./supported-tags ]]; then
-    if grep -q "$release_version" ./supported-tags; then
-      echo "Found in supported-tags: release[$release_version]"
-      echo "$supported_tag" >> ./supported-tags
-    else
-      echo "Not found in supported-tags: release[$release_version]"
-      echo "$supported_tag" > ./supported-tags
-
-      for release_path in $(ls -d */); do
-        if [[ ${supported_tag} != "$release_path"* ]]; then
-          echo "Removing directory: release[$release_path]"
-          rm -rf "$release_path"
-        fi
-      done
-    fi
+if [[ -f ./supported-tags ]]; then
+  if grep -q "$release_version" ./supported-tags; then
+    echo "Found in supported-tags: release[$release_version]"
+    echo "$supported_tag" >> ./supported-tags
   else
-    echo "Creating supported-tags file"
+    echo "Not found in supported-tags: release[$release_version]"
     echo "$supported_tag" > ./supported-tags
+
+    for release_path in $(ls -d */); do
+      if [[ ${supported_tag} != "$release_path"* ]]; then
+        echo "Removing directory: release[$release_path]"
+        rm -rf "$release_path"
+      fi
+    done
   fi
+else
+  echo "Creating supported-tags file"
+  echo "$supported_tag" > ./supported-tags
+fi
 
-  git add .
-  git commit -m "Add supported tag [$supported_tag]"
-  git push
-
-  echo "add_dockerfile(): end"
-}
-
-main "$@"
+#  git add .
+#  git commit -m "Add supported tag [$supported_tag]"
+#  git push
