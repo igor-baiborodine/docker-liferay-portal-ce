@@ -53,11 +53,11 @@ mkdir -p "$release_version/$variant"
 base_image="openjdk:${java_variant:3}-${java_variant:0:3}${sub_variant:+-$sub_variant}" # ":8-jdk-alpine", ":11-jdk-slim"
 echo "base_image:$base_image"
 
-sed -r \
-  -e 's/^(FROM) .*/\1 '"$base_image"'/g' \
-  -e 's#^(ENV LIFERAY_PORTAL_CE_DOWNLOAD_URL) .*#\1 '"$download_url"'#' \
-  -e 's/^(ENV LIFERAY_PORTAL_CE_VERSION) .*/\1 '"$release_version"'/' \
-  -e 's/^(ENV LIFERAY_PORTAL_CE_MD5) .*/\1 '"$md5"'/' \
+sed \
+  -e 's!%%BASE_IMAGE%%!'"$base_image"'!g' \
+  -e 's!%%LIFERAY_PORTAL_CE_DOWNLOAD_URL%%!'"$download_url"'!g' \
+  -e 's!%%LIFERAY_PORTAL_CE_VERSION%%!'"$release_version"'!g' \
+  -e 's!%%LIFERAY_PORTAL_CE_MD5%%!'"$md5"'!g' \
   "Dockerfile${sub_variant:+-$sub_variant}.template" \
   > "$release_version/$variant/Dockerfile"
 

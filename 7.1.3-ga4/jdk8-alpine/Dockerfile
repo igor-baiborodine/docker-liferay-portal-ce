@@ -10,19 +10,19 @@
 # Build stage 0: builder
 ################################################################################
 
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jdk-alpine AS builder
 
-ENV LIFERAY_PORTAL_CE_DOWNLOAD_URL https://releases.liferay.com/portal/7.1.3-ga4/liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz
-ENV LIFERAY_PORTAL_CE_MD5 9831cfdd0488223513e78b08975ff505
+ENV LIFERAY_PORTAL_CE_DOWNLOAD_URL=https://releases.liferay.com/portal/7.1.3-ga4/liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz
+ENV LIFERAY_PORTAL_CE_MD5=9831cfdd0488223513e78b08975ff505
 
 # to be removed
-#COPY liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz .
+COPY liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz .
 
 RUN set -ex; \
-    wget "$LIFERAY_PORTAL_CE_DOWNLOAD_URL"; \
-    echo "$LIFERAY_PORTAL_CE_MD5 $(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" | md5sum -c -; \
-    mkdir /src/liferay-portal-ce-tomcat; \
-    tar -zxf "$(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" -C /src/liferay-portal-ce-tomcat --strip-components=1;
+    #wget "$LIFERAY_PORTAL_CE_DOWNLOAD_URL"; \
+    echo "$LIFERAY_PORTAL_CE_MD5  $(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" | md5sum -c -; \
+    mkdir /tmp/liferay-portal-ce-tomcat; \
+    tar -zxf "$(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" -C /tmp/liferay-portal-ce-tomcat --strip-components=1
 
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
@@ -39,17 +39,17 @@ RUN apk add --no-cache \
     tree \
     bash
 
-ENV LIFERAY_PORTAL_CE_VERSION 7.1.3-ga4
-ENV LIFERAY_HOME /opt/liferay
-ENV LIFERAY_BASE /etc/opt/liferay
+ENV LIFERAY_PORTAL_CE_VERSION=7.1.3-ga4
+ENV LIFERAY_HOME=/opt/liferay
+ENV LIFERAY_BASE=/etc/opt/liferay
 
-COPY --from=builder --chown=liferay:liferay /src/liferay-portal-ce-tomcat ${LIFERAY_HOME}
+COPY --from=builder --chown=liferay:liferay /tmp/liferay-portal-ce-tomcat ${LIFERAY_HOME}
 
 RUN set -ex; \
     mkdir -p "$LIFERAY_BASE"; \
     ls "$LIFERAY_HOME" | grep tomcat | sed 's/.*-//' > "$LIFERAY_HOME/tomcat_version"; \
     ln -s "$LIFERAY_HOME"/tomcat-$(cat "$LIFERAY_HOME"/tomcat_version) "$LIFERAY_HOME/tomcat"; \
-    chown -R liferay:liferay "$LIFERAY_BASE";
+    chown -R liferay:liferay "$LIFERAY_BASE"
 
 LABEL \
     maintainer="Igor Baiborodine <ibaiborodine@gmail.com>" \
