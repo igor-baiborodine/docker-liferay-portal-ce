@@ -3,10 +3,10 @@ services: docker
 
 env:
   global:
-    - secure: TODO
+    - secure:
     - REPO=docker-liferay-portal-ce
   matrix:
-
+    - VERSION=7.1.3-ga4 VARIANT=jdk8-alpine
 install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - git clone https://github.com/docker-library/official-images.git ~/official-images
@@ -21,11 +21,7 @@ script:
       set -x
       docker build -t "$image" ./"$VERSION/$VARIANT"
       ~/official-images/test/run.sh "$image"
-      docker push "$image"
-      ./generate-readme.sh "$VERSION/$VARIANT" "$TRAVIS_COMMIT"
-      git status
     )
 
 after_success:
   - docker images
-  - ./push-remote.sh

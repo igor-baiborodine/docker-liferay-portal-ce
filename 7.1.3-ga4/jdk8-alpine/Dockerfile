@@ -10,25 +10,24 @@
 # Build stage 0: builder
 ################################################################################
 
-#FROM openjdk:placeholder AS builder
-FROM openjdk:8u201-jdk-alpine3.9 AS builder
+FROM openjdk:8-jdk-alpine
 
-#ENV LIFERAY_PORTAL_CE_TOMCAT_DOWNLOAD_URL=placeholder
-ENV LIFERAY_PORTAL_CE_BUNDLE_DOWNLOAD_URL=https://releases.liferay.com/portal/7.1.2-ga3/liferay-ce-portal-tomcat-7.1.2-ga3-20190107144105508.tar.gz
+ENV LIFERAY_PORTAL_CE_DOWNLOAD_URL https://releases.liferay.com/portal/7.1.3-ga4/liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz
+ENV LIFERAY_PORTAL_CE_MD5 9831cfdd0488223513e78b08975ff505
 
 # to be removed
-COPY liferay-portal-ce-bundle.tar.gz .
+#COPY liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz .
 
 RUN set -ex; \
-    #wget -O liferay-portal-ce-bundle.tar.gz "$LIFERAY_PORTAL_CE_BUNDLE_DOWNLOAD_URL"; \
-    mkdir /liferay-portal-ce-bundle; \
-    tar -zxf liferay-portal-ce-bundle.tar.gz -C /liferay-portal-ce-bundle --strip-components=1; \
-    rm liferay-portal-ce-bundle.tar.gz
+    wget "$LIFERAY_PORTAL_CE_DOWNLOAD_URL"; \
+    echo "$LIFERAY_PORTAL_CE_MD5 $(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" | md5sum -c -; \
+    mkdir /src/liferay-portal-ce-tomcat; \
+    tar -zxf "$(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" -C /src/liferay-portal-ce-tomcat --strip-components=1;
 
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
 ################################################################################
-FROM openjdk:8u201-jdk-alpine3.9
+FROM openjdk:8-jdk-alpine
 
 RUN adduser -D liferay && addgroup liferay liferay
 
@@ -40,16 +39,11 @@ RUN apk add --no-cache \
     tree \
     bash
 
-#ENV LIFERAY_PORTAL_CE_VERSION=placeholder
-ENV LIFERAY_PORTAL_CE_VERSION=7.1.2-ga3
-ENV LIFERAY_HOME=/opt/liferay
-ENV LIFERAY_BASE=/etc/opt/liferay
-# override default portal.properties
-ENV LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false
-ENV LIFERAY_TERMS_PERIOD_OF_PERIOD_USE_PERIOD_REQUIRED=false
-ENV LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_ENABLE=false
+ENV LIFERAY_PORTAL_CE_VERSION 7.1.3-ga4
+ENV LIFERAY_HOME /opt/liferay
+ENV LIFERAY_BASE /etc/opt/liferay
 
-COPY --from=builder --chown=liferay:liferay /liferay-portal-ce-bundle ${LIFERAY_HOME}
+COPY --from=builder --chown=liferay:liferay /src/liferay-portal-ce-tomcat ${LIFERAY_HOME}
 
 RUN set -ex; \
     mkdir -p "$LIFERAY_BASE"; \
