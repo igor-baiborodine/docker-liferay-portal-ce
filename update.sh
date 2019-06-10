@@ -53,12 +53,31 @@ mkdir -p "$release_version/$variant"
 base_image="openjdk:${java_variant:3}-${java_variant:0:3}${sub_variant:+-$sub_variant}" # ":8-jdk-alpine", ":11-jdk-slim"
 echo "base_image:$base_image"
 
+install_packages='apk add --no-cache \\\
+    "su-exec>=0.2" \\\
+    tomcat-native \\\
+    ttf-dejavu \\\
+    bash'
+
+if [[ ${sub_variant} == slim ]] ; then
+  install_packages="set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+    gosu \
+    tomcat-native \
+    ttf-dejavu ; \
+    rm -rf /var/lib/apt/lists/*; \
+    gosu nobody true"
+fi
+echo "install_packages: $install_packages"
+
 sed \
   -e 's!%%BASE_IMAGE%%!'"$base_image"'!g' \
   -e 's!%%LIFERAY_PORTAL_CE_DOWNLOAD_URL%%!'"$download_url"'!g' \
   -e 's!%%LIFERAY_PORTAL_CE_VERSION%%!'"$release_version"'!g' \
   -e 's!%%LIFERAY_PORTAL_CE_MD5%%!'"$md5"'!g' \
-  "Dockerfile${sub_variant:+-$sub_variant}.template" \
+  -e 's!%%INSTALL_PACKAGES%%!'"$install_packages"'!g' \
+  "Dockerfile.template" \
   > "$release_version/$variant/Dockerfile"
 
 su_tool='su-exec'
@@ -70,6 +89,7 @@ sed \
   -e 's!%%SU_TOOL%%!'"$su_tool"'!g' \
   docker-entrypoint.template \
   > "$release_version/$variant/docker-entrypoint.sh"
+chmod +x "$release_version/$variant/docker-entrypoint.sh"
 
 travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$release_version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
 echo "Modifying .travis.yml with new VERSION-VARIANT[$release_version-$variant]"

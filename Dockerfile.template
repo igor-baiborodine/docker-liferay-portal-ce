@@ -16,10 +16,10 @@ ENV LIFERAY_PORTAL_CE_DOWNLOAD_URL=%%LIFERAY_PORTAL_CE_DOWNLOAD_URL%%
 ENV LIFERAY_PORTAL_CE_MD5=%%LIFERAY_PORTAL_CE_MD5%%
 
 # to be removed
-COPY liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz .
+#COPY liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz .
 
 RUN set -ex; \
-    #wget "$LIFERAY_PORTAL_CE_DOWNLOAD_URL"; \
+    wget "$LIFERAY_PORTAL_CE_DOWNLOAD_URL"; \
     echo "$LIFERAY_PORTAL_CE_MD5  $(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" | md5sum -c -; \
     mkdir /tmp/liferay-portal-ce-tomcat; \
     tar -zxf "$(basename $LIFERAY_PORTAL_CE_DOWNLOAD_URL)" -C /tmp/liferay-portal-ce-tomcat --strip-components=1
@@ -31,13 +31,7 @@ FROM %%BASE_IMAGE%%
 
 RUN adduser -D liferay && addgroup liferay liferay
 
-RUN apk add --no-cache \
-# su-exec for easy step-down from root
-    'su-exec>=0.2' \
-    tomcat-native \
-    ttf-dejavu \
-    tree \
-    bash
+RUN %%INSTALL_PACKAGES%%
 
 ENV LIFERAY_PORTAL_CE_VERSION=%%LIFERAY_PORTAL_CE_VERSION%%
 ENV LIFERAY_HOME=/opt/liferay
