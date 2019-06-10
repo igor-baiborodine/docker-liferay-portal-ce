@@ -61,7 +61,15 @@ sed \
   "Dockerfile${sub_variant:+-$sub_variant}.template" \
   > "$release_version/$variant/Dockerfile"
 
-cp -a docker-entrypoint.sh "$release_version/$variant/"
+su_tool='su-exec'
+if [[ ${sub_variant} == slim ]] ; then
+  su_tool='gosu'
+fi
+
+sed \
+  -e 's!%%SU_TOOL%%!'"$su_tool"'!g' \
+  docker-entrypoint.template \
+  > "$release_version/$variant/docker-entrypoint.sh"
 
 travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$release_version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
 echo "Modifying .travis.yml with new VERSION-VARIANT[$release_version-$variant]"
