@@ -26,7 +26,7 @@ RUN set -ex; \
 ################################################################################
 FROM openjdk:8-jdk-alpine
 
-RUN addgroup liferay && adduser -D liferay -G liferay
+RUN addgroup -S liferay && adduser -S -G liferay liferay
 
 RUN set -ex; \
     apk add --no-cache \
