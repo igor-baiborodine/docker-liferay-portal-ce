@@ -9,9 +9,8 @@ if [[ -d "$supported_tag" ]]; then
   exit 1
 fi
 
-version="$supported_tag"
-release_version="${version%%/*}"
-variant="$(basename "$version")"
+version="${supported_tag%%/*}"
+variant="$(basename "$supported_tag")"
 java_variant="${variant%%-*}"
 
 if [[ "$java_variant" != jdk* ]]; then
@@ -26,19 +25,20 @@ if [[ ! (${sub_variant} == alpine || ${sub_variant} == slim) ]] ; then
   exit 1
 fi
 
-echo "Parsed supported_tag {
-  release_version: $release_version
-  variant: $variant
-  java_variant: $java_variant
-  sub_variant: $sub_variant
-}"
+echo "version: $version
+variant: $variant
+java_variant: $java_variant
+sub_variant: $sub_variant"
+
+base_image="openjdk:${java_variant:3}-${java_variant:0:3}${sub_variant:+-$sub_variant}" # ":8-jdk-alpine", ":11-jdk-slim"
+echo "base_image: $base_image"
 
 full_version=$(
-  curl -fsSL --compressed "https://releases.liferay.com/portal/$release_version/" \
-    | grep -E '<a href="liferay-ce-portal-tomcat-'"$release_version"'-[0-9]+.tar.gz.MD5' \
+  curl -fsSL --compressed "https://releases.liferay.com/portal/$version/" \
+    | grep -E '<a href="liferay-ce-portal-tomcat-'"$version"'-[0-9]+.tar.gz.MD5' \
     | sed -r 's!.*<a href="liferay-ce-portal-tomcat-([^"/]+)/?.tar.gz.MD5".*!\1!'
 )
-download_url="https://releases.liferay.com/portal/$release_version/liferay-ce-portal-tomcat-$full_version.tar.gz"
+download_url="https://releases.liferay.com/portal/$version/liferay-ce-portal-tomcat-$full_version.tar.gz"
 echo "download_url: $download_url"
 
 md5=$(
@@ -47,38 +47,16 @@ md5=$(
 )
 echo "md5: $md5"
 
-echo "Adding Dockerfile for $release_version/$variant"
-mkdir -p "$release_version/$variant"
-
-base_image="openjdk:${java_variant:3}-${java_variant:0:3}${sub_variant:+-$sub_variant}" # ":8-jdk-alpine", ":11-jdk-slim"
-echo "base_image:$base_image"
-
-install_packages='apk add --no-cache \\\
-    "su-exec>=0.2" \\\
-    tomcat-native \\\
-    ttf-dejavu \\\
-    bash'
-
-if [[ ${sub_variant} == slim ]] ; then
-  install_packages="set -eux; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-    gosu \
-    tomcat-native \
-    ttf-dejavu ; \
-    rm -rf /var/lib/apt/lists/*; \
-    gosu nobody true"
-fi
-echo "install_packages: $install_packages"
+echo "Adding Dockerfile for $version/$variant..."
+mkdir -p "$version/$variant"
 
 sed \
   -e 's!%%BASE_IMAGE%%!'"$base_image"'!g' \
-  -e 's!%%LIFERAY_PORTAL_CE_DOWNLOAD_URL%%!'"$download_url"'!g' \
-  -e 's!%%LIFERAY_PORTAL_CE_VERSION%%!'"$release_version"'!g' \
-  -e 's!%%LIFERAY_PORTAL_CE_MD5%%!'"$md5"'!g' \
-  -e 's!%%INSTALL_PACKAGES%%!'"$install_packages"'!g' \
-  "Dockerfile.template" \
-  > "$release_version/$variant/Dockerfile"
+  -e 's!%%LIFERAY_VERSION%%!'"$version"'!g' \
+  -e 's!%%LIFERAY_DOWNLOAD_URL%%!'"$download_url"'!g' \
+  -e 's!%%LIFERAY_DOWNLOAD_MD5%%!'"$md5"'!g' \
+  "Dockerfile${sub_variant:+-$sub_variant}.template" \
+  > "$version/$variant/Dockerfile"
 
 su_tool='su-exec'
 if [[ ${sub_variant} == slim ]] ; then
@@ -88,30 +66,30 @@ fi
 sed \
   -e 's!%%SU_TOOL%%!'"$su_tool"'!g' \
   docker-entrypoint.template \
-  > "$release_version/$variant/docker-entrypoint.sh"
-chmod +x "$release_version/$variant/docker-entrypoint.sh"
+  > "$version/$variant/docker-entrypoint.sh"
+chmod +x "$version/$variant/docker-entrypoint.sh"
 
-travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$release_version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
-echo "Modifying .travis.yml with new VERSION-VARIANT[$release_version-$variant]"
+travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
+echo "Modifying .travis.yml with new VERSION/VARIANT[$version/$variant]..."
 echo "$travis" > .travis.yml
 
 if [[ -f ./supported-tags ]]; then
-  if grep -q "$release_version" ./supported-tags; then
-    echo "Found in supported-tags: release[$release_version]"
+  if grep -q "$version" ./supported-tags; then
+    echo "Found in supported-tags: release[$version]"
     echo "$supported_tag" >> ./supported-tags
   else
-    echo "Not found in supported-tags: release[$release_version]"
+    echo "Not found in supported-tags: release[$version]"
     echo "$supported_tag" > ./supported-tags
 
     for release_path in $(ls -d */); do
       if [[ ${supported_tag} != "$release_path"* ]]; then
-        echo "Removing directory: release[$release_path]"
+        echo "Removing directory: release[$release_path]..."
         rm -rf "$release_path"
       fi
     done
   fi
 else
-  echo "Creating supported-tags file"
+  echo "Creating supported-tags file..."
   echo "$supported_tag" > ./supported-tags
 fi
 
