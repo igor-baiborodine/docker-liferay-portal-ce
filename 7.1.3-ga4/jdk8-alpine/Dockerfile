@@ -15,7 +15,7 @@ FROM openjdk:8-jdk-alpine AS builder
 ENV LIFERAY_DOWNLOAD_URL=https://releases.liferay.com/portal/7.1.3-ga4/liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz
 ENV LIFERAY_DOWNLOAD_MD5=9831cfdd0488223513e78b08975ff505
 
-RUN set -eux; \
+RUN set -ex; \
     wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL"; \
     echo "$LIFERAY_DOWNLOAD_MD5  liferay-bundle.tar.gz" | md5sum -c -; \
     mkdir /tmp/liferay-bundle; \
@@ -28,10 +28,13 @@ FROM openjdk:8-jdk-alpine
 
 RUN addgroup liferay && adduser -D liferay -G liferay
 
-RUN apk add --no-cache \
-    # su-exec for easy step-down from root
+RUN set -ex; \
+    apk add --no-cache \
+    # su tool for easy step-down from root
     'su-exec>=0.2' \
+    # Tomcat native library using the Apache Portable Runtime
     tomcat-native \
+    # Font family based on the Bitstream Vera Fonts with a wider range of characters
     ttf-dejavu \
     bash
 
@@ -41,21 +44,20 @@ ENV LIFERAY_BASE=/etc/opt/liferay
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 
-RUN set -eux; \
+RUN set -ex; \
     mkdir -p "$LIFERAY_BASE"; \
     ls "$LIFERAY_HOME" | grep tomcat | sed 's/.*-//' > "$LIFERAY_HOME/tomcat_version"; \
     ln -s "$LIFERAY_HOME"/tomcat-$(cat "$LIFERAY_HOME"/tomcat_version) "$LIFERAY_HOME/tomcat"; \
-    chown -R liferay:liferay "$LIFERAY_BASE"; \
-    rm "$LIFERAY_HOME/tomcat_version"
+    chown -R liferay:liferay "$LIFERAY_BASE"
 
 RUN set -e \
-  && native_lines="$($LIFERAY_HOME/tomcat/bin/catalina.sh configtest 2>&1)" \
-	&& native_lines="$(echo "$native_lines" | grep 'Apache Tomcat Native')" \
-	&& native_lines="$(echo "$native_lines" | sort -u)" \
-	&& if ! echo "$native_lines" | grep 'INFO: Loaded APR based Apache Tomcat Native library' >&2; then \
-		echo >&2 "$native_lines"; \
-		exit 1; \
-	fi
+    && native_lines="$($LIFERAY_HOME/tomcat/bin/catalina.sh configtest 2>&1)" \
+    && native_lines="$(echo "$native_lines" | grep 'Apache Tomcat Native')" \
+    && native_lines="$(echo "$native_lines" | sort -u)" \
+    && if ! echo "$native_lines" | grep 'INFO: Loaded APR based Apache Tomcat Native library' >&2; then \
+      echo >&2 "$native_lines"; \
+      exit 1; \
+    fi
 
 LABEL \
     maintainer="Igor Baiborodine <ibaiborodine@gmail.com>" \
