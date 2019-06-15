@@ -45,9 +45,9 @@ ENV LIFERAY_BASE=/etc/opt/liferay
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 
 RUN set -ex; \
-    mkdir -p "$LIFERAY_BASE"; \
-    ls "$LIFERAY_HOME" | grep tomcat | sed 's/.*-//' > "$LIFERAY_HOME/tomcat_version"; \
+    ls "$LIFERAY_HOME" | grep "^tomcat-[0-9].*" | sed 's/.*-//' > "$LIFERAY_HOME/tomcat_version"; \
     ln -s "$LIFERAY_HOME"/tomcat-$(cat "$LIFERAY_HOME"/tomcat_version) "$LIFERAY_HOME/tomcat"; \
+    mkdir -p "$LIFERAY_BASE"; \
     chown -R liferay:liferay "$LIFERAY_BASE"
 
 RUN set -e \
