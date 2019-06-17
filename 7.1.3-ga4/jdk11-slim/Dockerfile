@@ -10,10 +10,10 @@
 # Build stage 0: builder
 ################################################################################
 
-FROM %%BASE_IMAGE%% AS builder
+FROM openjdk:11-jdk-slim AS builder
 
-ENV LIFERAY_DOWNLOAD_URL=%%LIFERAY_DOWNLOAD_URL%%
-ENV LIFERAY_DOWNLOAD_MD5=%%LIFERAY_DOWNLOAD_MD5%%
+ENV LIFERAY_DOWNLOAD_URL=https://releases.liferay.com/portal/7.1.3-ga4/liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5=9831cfdd0488223513e78b08975ff505
 
 RUN set -ex; \
     apt-get update; \
@@ -29,7 +29,7 @@ RUN set -ex; \
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
 ################################################################################
-FROM %%BASE_IMAGE%%
+FROM openjdk:11-jdk-slim
 
 RUN groupadd liferay && useradd -g liferay liferay
 
@@ -45,7 +45,7 @@ RUN set -ex; \
     rm -rf /var/lib/apt/lists/*; \
     gosu nobody true
 
-ENV LIFERAY_VERSION=%%LIFERAY_VERSION%%
+ENV LIFERAY_VERSION=7.1.3-ga4
 ENV LIFERAY_HOME=/opt/liferay
 ENV LIFERAY_BASE=/etc/opt/liferay
 
