@@ -12,8 +12,8 @@
 
 FROM %%BASE_IMAGE%% AS builder
 
-ENV LIFERAY_DOWNLOAD_URL=%%LIFERAY_DOWNLOAD_URL%%
-ENV LIFERAY_DOWNLOAD_MD5=%%LIFERAY_DOWNLOAD_MD5%%
+ENV LIFERAY_DOWNLOAD_URL %%LIFERAY_DOWNLOAD_URL%%
+ENV LIFERAY_DOWNLOAD_MD5 %%LIFERAY_DOWNLOAD_MD5%%
 
 RUN set -ex; \
     wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL"; \
@@ -38,20 +38,21 @@ RUN set -ex; \
     ttf-dejavu \
     bash
 
-ENV LIFERAY_VERSION=%%LIFERAY_VERSION%%
-ENV LIFERAY_HOME=/opt/liferay
-ENV LIFERAY_BASE=/etc/opt/liferay
+ENV LIFERAY_VERSION %%LIFERAY_VERSION%%
+ENV LIFERAY_HOME /opt/liferay
+ENV LIFERAY_BASE /etc/opt/liferay
+ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 
-RUN set -ex; \
-    ls "$LIFERAY_HOME" | grep "^tomcat-[0-9].*" | sed 's/.*-//' > "$LIFERAY_HOME/tomcat_version"; \
-    ln -s "$LIFERAY_HOME"/tomcat-$(cat "$LIFERAY_HOME"/tomcat_version) "$LIFERAY_HOME/tomcat"; \
-    mkdir -p "$LIFERAY_BASE"; \
-    chown -R liferay:liferay "$LIFERAY_BASE"
+RUN set -ex \
+    && path=$(find "$(cd ..; pwd)" -name "catalina.sh") \
+    && ln -s "${path%%/bin*}" "$LIFERAY_HOME/tomcat" \
+    && mkdir -p "$LIFERAY_BASE" \
+    && chown -R liferay:liferay "$LIFERAY_BASE"
 
 RUN set -e \
-    && native_lines="$($LIFERAY_HOME/tomcat/bin/catalina.sh configtest 2>&1)" \
+    && native_lines="$(catalina.sh configtest 2>&1)" \
     && native_lines="$(echo "$native_lines" | grep 'Apache Tomcat Native')" \
     && native_lines="$(echo "$native_lines" | sort -u)" \
     && if ! echo "$native_lines" | grep 'INFO: Loaded APR based Apache Tomcat Native library' >&2; then \
@@ -63,7 +64,6 @@ LABEL \
     maintainer="Igor Baiborodine <ibaiborodine@gmail.com>" \
     org.label-schema.schema-version="1.0" \
     org.label-schema.name="liferay-portal-ce" \
-    org.label-schema.version="${LIFERAY_VERSION}" \
     org.label-schema.vcs-url="https://github.com/igor-baiborodine/docker-liferay-portal-ce" \
     org.label-schema.usage="https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/README.md"
 
@@ -78,7 +78,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 8080 11311
-CMD ["bash", "-c", "$LIFERAY_HOME/tomcat/bin/catalina.sh run"]
+CMD ["catalina.sh", "run"]
 
 ################################################################################
 # End of multi-stage Dockerfile
