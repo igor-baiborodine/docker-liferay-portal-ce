@@ -39,6 +39,7 @@ RUN set -ex; \
     # su tool for easy step-down from root
     gosu \
     # Font family based on the Bitstream Vera Fonts with a wider range of characters
+    fontconfig \
     ttf-dejavu \
     # Apache Portable Runtime dependecy for Tomcat native library
     libapr1; \
