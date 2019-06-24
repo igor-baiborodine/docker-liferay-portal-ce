@@ -1,8 +1,7 @@
-# Liferay Portal CE - Docker Image
-
-[![Build
+# [https://hub.docker.com/r/ibaiborodine/liferay-portal-ce](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
+ 
+Last added tag: [![Build
 Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?branch=master)](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce)
-
 
 # Supported tags and respective `Dockerfile` links
 
@@ -28,4 +27,8 @@ Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?bran
 -	**Supported Docker versions**:  
 	[the latest release](https://github.com/docker/docker-ce/releases/latest) (down to 1.6 on a best-effort basis)
 
-%%CONTENT%%%%VARIANT%%%%LICENSE%%
+%%CONTENT%%
+
+%%VARIANT%%
+
+%%LICENSE%%

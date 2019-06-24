@@ -93,6 +93,6 @@ else
   echo "$supported_tag" > ./supported-tags
 fi
 
-#  git add .
-#  git commit -m "Add supported tag [$supported_tag]"
-#  git push
+git add .
+git commit -m "Add supported tag [$supported_tag]"
+git push
