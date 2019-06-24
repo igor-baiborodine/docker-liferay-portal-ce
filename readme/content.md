@@ -4,7 +4,7 @@
 
 [https://www.liferay.com/downloads-community](https://www.liferay.com/downloads-community)
 
-![logo](./readme/logo.png)
+![logo](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/readme/logo.png?raw=true)
  
 Logo &copy; Liferay, Inc.
 
