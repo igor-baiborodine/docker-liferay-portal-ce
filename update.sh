@@ -18,19 +18,19 @@ if [[ "$java_variant" != jdk* ]]; then
   exit 1
 fi
 
-sub_variant="${variant#$java_variant-}"
+os_variant="${variant#$java_variant-}"
 
-if [[ ! (${sub_variant} == alpine || ${sub_variant} == slim) ]] ; then
-  echo "Not supported sub-variant: $sub_variant"
-  exit 1
+if [[ "${os_variant}" == "${java_variant}" ]] ; then
+  os_variant=
 fi
 
 echo "version: $version
 variant: $variant
 java_variant: $java_variant
-sub_variant: $sub_variant"
+os_variant: $os_variant"
 
-base_image="openjdk:${java_variant:3}-${java_variant:0:3}${sub_variant:+-$sub_variant}" # ":8-jdk-alpine", ":11-jdk-slim"
+# e.g., openjdk:8-jdk, openjdk:8-jdk-alpine, openjdk:11-jdk-slim
+base_image="openjdk:${java_variant:3}-${java_variant:0:3}${os_variant:+-$os_variant}"
 echo "base_image: $base_image"
 
 full_version=$(
@@ -55,12 +55,12 @@ sed \
   -e 's!%%LIFERAY_VERSION%%!'"$version"'!g' \
   -e 's!%%LIFERAY_DOWNLOAD_URL%%!'"$download_url"'!g' \
   -e 's!%%LIFERAY_DOWNLOAD_MD5%%!'"$md5"'!g' \
-  "Dockerfile${sub_variant:+-$sub_variant}.template" \
+  "Dockerfile${os_variant:+-$os_variant}.template" \
   > "$version/$variant/Dockerfile"
 
-su_tool='su-exec'
-if [[ ${sub_variant} == slim ]] ; then
-  su_tool='gosu'
+su_tool='gosu'
+if [[ ${os_variant} == alpine ]] ; then
+  su_tool='su-exec'
 fi
 
 sed \

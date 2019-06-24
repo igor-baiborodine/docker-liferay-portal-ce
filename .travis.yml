@@ -4,6 +4,7 @@ services: docker
 env:
   global:
     - secure:
+    - REPO=docker-liferay-portal-ce
   matrix:
     - VERSION=7.1.3-ga4 VARIANT=jdk8-slim
 
