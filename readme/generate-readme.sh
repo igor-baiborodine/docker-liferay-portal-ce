@@ -2,7 +2,7 @@
 
 set -e
 
-REPO_URL='https://github.com/igor-baiborodine/dockerhub-test'
+REPO_URL='https://github.com/igor-baiborodine/docker-liferay-portal-ce'
 
 replace_field() {
   local target_file="$1"
@@ -29,7 +29,7 @@ main() {
     local commit="${t#*:}"
     echo "tag: $tag, commit: $commit"
 
-    tags_content='-  [`'"${tag/\//-}"'` (*'"${tag}/Dockerfile"'*)]('"https://github.com/igor-baiborodine/${REPO}/blob/${commit}/${tag}/Dockerfile"$')\n'"$tags_content"
+    tags_content='-  [`'"${tag/\//-}"'` (*'"${tag}/Dockerfile"'*)]('"${REPO_URL}/blob/${commit}/${tag}/Dockerfile"$')\n'"$tags_content"
   done
   echo "tags_content: $tags_content"
 
@@ -38,6 +38,7 @@ main() {
   replace_field ./README.md 'CONTENT' "$(cat "readme/content.md")"
   replace_field ./README.md 'VARIANT' "$(cat "readme/variant.md")"
   replace_field ./README.md 'LICENSE' "$(cat "readme/license.md")"
+  replace_field ./README.md 'IMAGE' 'ibaiborodine/liferay-portal-ce'
 }
 
 main "$@"
