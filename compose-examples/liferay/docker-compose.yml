@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  liferay:
+    image: ibaiborodine/liferay-portal-ce
+    restart: always
+    environment:
+      LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED: "false"
+      LIFERAY_TERMS_PERIOD_OF_PERIOD_USE_PERIOD_REQUIRED: "false"
+      LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_ENABLED: "false"
+      LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_CUSTOM_PERIOD_QUESTION_PERIOD_ENABLED: "false"
+    ports:
+      - "80:8080"
