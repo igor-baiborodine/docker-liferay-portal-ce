@@ -18,7 +18,7 @@ $ docker run --name <container name> -d %%IMAGE%%:<tag>
 
 ... where `<container name>` is the name you want to assign to your container and `<tag>` is the tag specifying the Liferay Portal CE version you want. See the list above for relevant tags.
 
-The default Liferay Portal configuration is applied which features an embedded database (H2), and an embedded Elasticsearch instance. Please note that this setup is not suitable for production.
+The default Liferay Portal configuration contains an embedded Hypersonic database instance, and an embedded Elasticsearch instance. Please note that this setup is not suitable for production.
 
 You can test it by visiting `http://container-ip:8080` in a browser. To get the container IP address, you can execute the following command:
 ```console
@@ -71,7 +71,7 @@ $ docker exec -it <container name> bash
 
 The Liferay Portal log is available through Docker's container log:
 ```console
-docker logs -f <container name>
+$ docker logs -f <container name>
 ```
 
 ## Configure Liferay Portal via environment variables
@@ -100,7 +100,7 @@ $ docker run --name <container name> -d \
     --health-start-period=1m \
     --health-interval=1m \
     --health-retries=3 \
-    %%IMAGE%% 
+    %%IMAGE%%:<tag> 
 ```
 ... or by extending this image. For a more detailed explanation about why this image does not come with a default `HEALTHCHECK` defined, and for suggestions to implement your own health/liveness/readiness checks, you can read [here](https://github.com/docker-library/faq#healthcheck).
 
@@ -141,16 +141,32 @@ ENV LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_ENABLED false
 ENV LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_CUSTOM_PERIOD_QUESTION_PERIOD_ENABLED false
 ```
 
-## Apply custom configuration to a `liferay-portal` instance
+## Add new files or override existing ones
+With another optional `VOLUME` you will be able to customize your `liferay-portal` instance. This volume is defined by `LIFERAY_BASE` environment variable which is set to `/etc/opt/liferay`.
 
-Volume LIFERAY_BASE
-### Define portal-ext.properties
-TODO
+You will need to:
+1.	Create a directory on a suitable volume on your host system, e.g. `/my/own/liferaybasedir`.
+2.	Start your `liferay-portal` instance like this:
+```console
+$ docker run --name <container name> -v /my/own/liferaybasedir:/etc/opt/liferay -d %%IMAGE%%:<tag>
+```
+The `-v /my/own/liferaybasedir:/etc/opt/liferay` part of the command mounts the `/my/own/liferaybasedir` directory from the underlying host system as `/etc/opt/liferay` inside the container.
 
-### Add new files or override existing ones
-TODO 
+All files and sub-directories with its content placed into the `/my/own/liferaybasedir` will be copied to the `LIFERAY_HOME` directory when the container starts. The only exception here is that the `/my/own/liferaybasedir/scripts` and its content will not be copied. 
 
-### Execute custom shell scripts
-TODO: LIFERAY_BASE/docker-entrypoint-initliferay.d
+For example:
+1. If you need to add `portal-ext.properties` to your `liferay-portal` instance, place the portal-ext.properties file into the `/my/own/liferaybasedir` directory. 
+2. If you need to override `setenv.sh` in your `liferay-portal` instance, place the setenv.sh file into the `/my/own/liferaybasedir/tomcat/bin` directory.
 
+## Execute custom shell scripts
+To execute shell scripts before Liferay Portal starts, you can use the `VOLUME` that mapped to container's `/docker-entrypoint-initliferay.d` directory.
 
+You will need to:
+1.	Create a directory on a suitable volume on your host system, e.g. `/my/own/liferayinitdir`.
+2.	Start your `liferay-portal` instance like this:
+```console
+$ docker run --name <container name> -v /my/own/liferayinitdir:/docker-entrypoint-initliferay.d -d %%IMAGE%%:<tag>
+```
+The `-v /my/own/liferayinitdir:/docker-entrypoint-initliferay.d` part of the command mounts the `/my/own/liferayinitdir` directory from the underlying host system as `/docker-entrypoint-initliferay.d` inside the container.
+
+All shell scripts placed into the `/my/own/liferayinitdir` directory will be executed before Liferay Portal starts.
