@@ -41,6 +41,7 @@ RUN set -ex; \
 ENV LIFERAY_VERSION %%LIFERAY_VERSION%%
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
+ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
 ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
@@ -48,8 +49,8 @@ COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 RUN set -ex \
     && path=$(find "$(cd ..; pwd)" -name "catalina.sh") \
     && ln -s "${path%%/bin*}" "$LIFERAY_HOME/tomcat" \
-    && mkdir -p "$LIFERAY_BASE" \
-    && chown -R liferay:liferay "$LIFERAY_BASE"
+    && mkdir -p "$LIFERAY_BASE" "$LIFERAY_INIT"\
+    && chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT"
 
 RUN set -e \
     && native_lines="$(catalina.sh configtest 2>&1)" \
@@ -70,7 +71,8 @@ LABEL \
 VOLUME \
     ${LIFERAY_HOME}/data/document_library \
     ${LIFERAY_HOME}/deploy \
-    ${LIFERAY_BASE}
+    ${LIFERAY_BASE} \
+    ${LIFERAY_INIT}
 
 WORKDIR ${LIFERAY_HOME}
 

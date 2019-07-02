@@ -9,6 +9,12 @@ if [ "$(ls -A $LIFERAY_BASE)" ]; then
   cp -rv "$LIFERAY_BASE"/* "$LIFERAY_HOME"
 fi
 
+for f in "$LIFERAY_INIT"/*; do
+  case "$f" in
+    *.sh) . "$f" ;;
+  esac
+done
+
 if [ "$1" = 'catalina.sh' -a "$(id -u)" = '0' ]; then
   chown -R liferay:liferay "$LIFERAY_HOME"
   exec %%SU_TOOL%% liferay "$@"
