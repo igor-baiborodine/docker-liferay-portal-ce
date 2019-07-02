@@ -2,7 +2,7 @@
 
 set -e
 
-REPO_URL='https://github.com/igor-baiborodine/docker-liferay-portal-ce'
+GITHUB_REPO_URL='https://github.com/igor-baiborodine/docker-liferay-portal-ce'
 
 replace_field() {
   local target_file="$1"
@@ -29,7 +29,7 @@ main() {
     local commit="${t#*:}"
     echo "tag: $tag, commit: $commit"
 
-    tags_content='-  [`'"${tag/\//-}"'` (*'"${tag}/Dockerfile"'*)]('"${REPO_URL}/blob/${commit}/${tag}/Dockerfile"$')\n'"$tags_content"
+    tags_content='-  [`'"${tag/\//-}"'` (*'"${tag}/Dockerfile"'*)]('"${GITHUB_REPO_URL}/blob/${commit}/${tag}/Dockerfile"$')\n'"$tags_content"
   done
   echo "tags_content: $tags_content"
 

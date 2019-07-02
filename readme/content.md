@@ -85,7 +85,7 @@ You can override [portal.properties](https://github.com/liferay/liferay-portal/b
 #
 setup.wizard.enabled=true
 ```
-To override `setup.wizard.enabled` property, set `LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED` to `false` when running a new container: 
+To override `setup.wizard.enabled` property, set `LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED` environment variable to `false` when starting a new container: 
 ```console
 $ docker run --name <container name> -p 80:8080 -it \ 
     --env LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false %%IMAGE%%:<tag>
@@ -114,7 +114,7 @@ $ docker run --name <container name> -v /my/own/deploydir:/opt/liferay/deploy -d
 The `-v /my/own/deploydir:/opt/liferay/deploy` part of the command mounts the `/my/own/deploydir` directory from the underlying host system as `/opt/liferay/deploy` inside the container to scan for layout templates, portlets, and themes to auto deploy.
 
 ## Where to store documents and media files
-By default, Liferay Portal uses a document library store option called Simple File Store to store documents and media files on a file system (local or mounted). The store’s default root folder is `LIFERAY_HOME/data/document_library`.
+By default, Liferay Portal uses a document library store option called Simple File Store to store documents and media files on a file system (local or mounted). The store's default root folder is `LIFERAY_HOME/data/document_library`.
 There are several ways to store data used by applications that run in Docker containers. One of the options is to create a data directory on the host system (outside the container) and mount this to a directory visible from inside the container. This places the document and media files in a known location on the host system, and makes it easy for tools and applications on the host system to access the files. The downside is that the user needs to make sure that the directory exists, and that e.g. directory permissions and other security mechanisms on the host system are set up correctly.
 
 You will need to:
@@ -152,14 +152,14 @@ $ docker run --name <container name> -v /my/own/liferaybasedir:/etc/opt/liferay 
 ```
 The `-v /my/own/liferaybasedir:/etc/opt/liferay` part of the command mounts the `/my/own/liferaybasedir` directory from the underlying host system as `/etc/opt/liferay` inside the container.
 
-All files and sub-directories with its content placed into the `/my/own/liferaybasedir` will be copied to the `LIFERAY_HOME` directory when the container starts. The only exception here is that the `/my/own/liferaybasedir/scripts` and its content will not be copied. 
+All files and sub-directories with its content placed into the `/my/own/liferaybasedir` will be copied to the `LIFERAY_HOME` directory when the container starts. 
 
 For example:
 1. If you need to add `portal-ext.properties` to your `liferay-portal` instance, place the portal-ext.properties file into the `/my/own/liferaybasedir` directory. 
 2. If you need to override `setenv.sh` in your `liferay-portal` instance, place the setenv.sh file into the `/my/own/liferaybasedir/tomcat/bin` directory.
 
 ## Execute custom shell scripts
-To execute shell scripts before Liferay Portal starts, you can use the `VOLUME` that mapped to container's `/docker-entrypoint-initliferay.d` directory.
+To execute shell scripts before Liferay Portal starts, you can use an optional volume `VOLUME` that mapped to container's `/docker-entrypoint-initliferay.d` directory.
 
 You will need to:
 1.	Create a directory on a suitable volume on your host system, e.g. `/my/own/liferayinitdir`.
