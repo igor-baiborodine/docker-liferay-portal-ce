@@ -28,4 +28,4 @@ script:
 
 after_success:
   - docker images
-  - "./push-remote.sh"
+  - ./push-remote.sh
