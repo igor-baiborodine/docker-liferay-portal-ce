@@ -16,7 +16,7 @@ ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.1.3-ga4/liferay-c
 ENV LIFERAY_DOWNLOAD_MD5 9831cfdd0488223513e78b08975ff505
 
 RUN set -ex; \
-    wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL" -q --show-progress --progress=bar:force 2>&1; \
+    wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL"; \
     echo "$LIFERAY_DOWNLOAD_MD5  liferay-bundle.tar.gz" | md5sum -c -; \
     mkdir /tmp/liferay-bundle; \
     tar -zxf liferay-bundle.tar.gz -C /tmp/liferay-bundle --strip-components=1
