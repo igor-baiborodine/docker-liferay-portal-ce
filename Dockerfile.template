@@ -16,7 +16,7 @@ ENV LIFERAY_DOWNLOAD_URL %%LIFERAY_DOWNLOAD_URL%%
 ENV LIFERAY_DOWNLOAD_MD5 %%LIFERAY_DOWNLOAD_MD5%%
 
 RUN set -ex; \
-    wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL"; \
+    wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL" -q --show-progress --progress=bar:force 2>&1; \
     echo "$LIFERAY_DOWNLOAD_MD5 liferay-bundle.tar.gz" | md5sum -c -; \
     mkdir /tmp/liferay-bundle; \
     tar -zxf liferay-bundle.tar.gz -C /tmp/liferay-bundle --strip-components=1; \

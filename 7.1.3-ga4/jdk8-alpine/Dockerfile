@@ -10,10 +10,10 @@
 # Build stage 0: builder
 ################################################################################
 
-FROM %%BASE_IMAGE%% AS builder
+FROM openjdk:8-jdk-alpine AS builder
 
-ENV LIFERAY_DOWNLOAD_URL %%LIFERAY_DOWNLOAD_URL%%
-ENV LIFERAY_DOWNLOAD_MD5 %%LIFERAY_DOWNLOAD_MD5%%
+ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.1.3-ga4/liferay-ce-portal-tomcat-7.1.3-ga4-20190508171117552.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5 9831cfdd0488223513e78b08975ff505
 
 RUN set -ex; \
     wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL" -q --show-progress --progress=bar:force 2>&1; \
@@ -24,7 +24,7 @@ RUN set -ex; \
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
 ################################################################################
-FROM %%BASE_IMAGE%%
+FROM openjdk:8-jdk-alpine
 
 RUN addgroup liferay && adduser -D -G liferay liferay
 
@@ -38,7 +38,7 @@ RUN set -ex; \
     ttf-dejavu \
     bash
 
-ENV LIFERAY_VERSION %%LIFERAY_VERSION%%
+ENV LIFERAY_VERSION 7.1.3-ga4
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
