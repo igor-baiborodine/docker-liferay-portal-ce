@@ -2,14 +2,9 @@
 # This Dockerfile was generated from the template at ../../Dockerfile-alpine.template
 #
 # Beginning of multi-stage Dockerfile
-################################################################################
-
-################################################################################
-# Beginning of multi-stage Dockerfile
 #
 # Build stage 0: builder
 ################################################################################
-
 FROM openjdk:8-jdk-alpine AS builder
 
 ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.2.0-ga1/liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761.tar.gz
