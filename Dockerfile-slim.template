@@ -20,7 +20,7 @@ RUN set -ex; \
     tar -zxf liferay-bundle.tar.gz -C /tmp/liferay-bundle --strip-components=1; \
     # download a stretch-backport version of tomcat-native library
     # since stretch's package repo contains an incompatible version (1.2.12)
-    wget -O /tmp/libtcnative-1.deb 'http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_1.2.21-1~bpo9+1_amd64.deb'
+    wget -O /tmp/libtcnative-1.deb 'http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_1.2.21-1~bpo9+1_amd64.deb' -q --show-progress --progress=bar:force 2>&1
 
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
