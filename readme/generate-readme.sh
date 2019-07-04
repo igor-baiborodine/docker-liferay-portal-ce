@@ -21,7 +21,7 @@ main() {
   local commit_hash="$2"
   echo "supported_tag: $supported_tag, commit_hash: $commit_hash"
 
-  sed -i 's,'"$supported_tag"','"$supported_tag:$commit_hash"',g' ./supported-tags
+  sed -i 's,^\b'"$supported_tag"'\b$,'"$supported_tag:$commit_hash"',' ./supported-tags
   local tags_content=
 
   for t in $(cat ./supported-tags); do
