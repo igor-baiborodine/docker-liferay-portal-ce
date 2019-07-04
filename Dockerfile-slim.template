@@ -5,7 +5,6 @@
 #
 # Build stage 0: builder
 ################################################################################
-
 FROM %%BASE_IMAGE%% AS builder
 
 ENV LIFERAY_DOWNLOAD_URL %%LIFERAY_DOWNLOAD_URL%%
