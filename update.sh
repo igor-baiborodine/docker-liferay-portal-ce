@@ -81,7 +81,7 @@ if [[ -f ./supported-tags ]]; then
     echo "Not found in supported-tags: release[$version]"
     echo "$supported_tag" > ./supported-tags
 
-    for release_path in $(ls -d */); do
+    for release_path in $(ls -d [7-9]*/); do
       if [[ ${supported_tag} != "$release_path"* ]]; then
         echo "Removing directory: release[$release_path]..."
         rm -rf "$release_path"
