@@ -46,7 +46,7 @@ version: '3'
 services:
   liferay:
     image: %%IMAGE%%
-    restart: always
+    restart: unless-stopped
     environment:
       LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED: "false"
       LIFERAY_TERMS_PERIOD_OF_PERIOD_USE_PERIOD_REQUIRED: "false"
