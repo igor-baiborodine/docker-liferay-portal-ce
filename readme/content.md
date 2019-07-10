@@ -18,7 +18,7 @@ $ docker run --name <container name> -d %%IMAGE%%:<tag>
 
 ... where `<container name>` is the name you want to assign to your container and `<tag>` is the tag specifying the Liferay Portal CE version you want. See the list above for relevant tags.
 
-The default Liferay Portal configuration contains an embedded Hypersonic database instance, and an embedded Elasticsearch instance. Please note that this setup is not suitable for production.
+The default Liferay Portal configuration contains an embedded Hypersonic database instance and an embedded Elasticsearch instance. Please note that this setup is not suitable for production.
 
 You can test it by visiting `http://container-ip:8080` in a browser. To get the container IP address, you can execute the following command:
 ```console
@@ -92,8 +92,8 @@ $ docker run --name <container name> -p 80:8080 -it \
 ```
 Also, the environment variables can be set via docker-compose.yml (see example above) or by extending this image (see example below). 
 
-## Healthcheck
-This image does not contain an explicit health check. To add a healthcheck, you can start your `liferay-portal` instance with `--health-*` options:
+## Health check
+This image does not contain an explicit health check. To add a health check, you can start your `liferay-portal` instance with `--health-*` options:
 ```console
 $ docker run --name <container name> -d \ 
     --health-cmd='curl -fsS "http://localhost:8080/c/portal/layout" || exit 1' \
@@ -111,11 +111,11 @@ This image exposes an optional `VOLUME` to allow deploying modules to a running 
 ```console
 $ docker run --name <container name> -v /my/own/deploydir:/opt/liferay/deploy -d %%IMAGE%%:<tag>
 ```
-The `-v /my/own/deploydir:/opt/liferay/deploy` part of the command mounts the `/my/own/deploydir` directory from the underlying host system as `/opt/liferay/deploy` inside the container to scan for layout templates, portlets, and themes to auto deploy.
+The `-v /my/own/deploydir:/opt/liferay/deploy` part of the command mounts the `/my/own/deploydir` directory from the underlying host system as `/opt/liferay/deploy` inside the container to scan for layout templates, portlets, and themes to auto-deploy.
 
 ## Where to store documents and media files
 By default, Liferay Portal uses a document library store option called Simple File Store to store documents and media files on a file system (local or mounted). The store's default root folder is `LIFERAY_HOME/data/document_library`.
-There are several ways to store data used by applications that run in Docker containers. One of the options is to create a data directory on the host system (outside the container) and mount this to a directory visible from inside the container. This places the document and media files in a known location on the host system, and makes it easy for tools and applications on the host system to access the files. The downside is that the user needs to make sure that the directory exists, and that e.g. directory permissions and other security mechanisms on the host system are set up correctly.
+There are several ways to store data used by applications that run in Docker containers. One of the options is to create a data directory on the host system (outside the container) and mount this to a directory visible from inside the container. This places the document and media files in a known location on the host system and makes it easy for tools and applications on the host system to access the files. The downside is that the user needs to make sure that the directory exists and that directory permissions and other security mechanisms on the host system are set up correctly.
 
 You will need to:
 1.	Create a data directory on a suitable volume on your host system, e.g. `/my/own/datadir`.
