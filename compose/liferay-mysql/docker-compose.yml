@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pwd
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - ./my/own/mysql/data:/var/lib/mysql
+      - ./my/own/mysql/conf.d:/etc/mysql/conf.d
+      - ./my/own/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  liferay:
+    image: ibaiborodine/liferay-portal-ce
+    depends_on:
+      - mysql
+    environment:
+      LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED: "false"
+      LIFERAY_TERMS_PERIOD_OF_PERIOD_USE_PERIOD_REQUIRED: "false"
+      LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_ENABLED: "false"
+      LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_CUSTOM_PERIOD_QUESTION_PERIOD_ENABLED: "false"
+    ports:
+      - "80:8080"
+      - "11311:11311"
+    volumes:
+      - ./my/own/liferay/base:/etc/opt/liferay
+      - ./my/own/liferay/data/document_library:/opt/liferay/data/document_library
+      - ./my/own/liferay/deploy:/opt/liferay/deploy
+    restart: unless-stopped

@@ -118,12 +118,12 @@ By default, Liferay Portal uses a document library store option called Simple Fi
 There are several ways to store data used by applications that run in Docker containers. One of the options is to create a data directory on the host system (outside the container) and mount this to a directory visible from inside the container. This places the document and media files in a known location on the host system and makes it easy for tools and applications on the host system to access the files. The downside is that the user needs to make sure that the directory exists and that directory permissions and other security mechanisms on the host system are set up correctly.
 
 You will need to:
-1.	Create a data directory on a suitable volume on your host system, e.g. `/my/own/datadir`.
+1.	Create a data directory on a suitable volume on your host system, e.g. `/my/own/liferaydatadir`.
 2.	Start your `liferay-portal` instance like this:
 ```console
-$ docker run --name <container name> -v /my/own/datadir:/opt/liferay/data/document_library -d %%IMAGE%%:<tag>
+$ docker run --name <container name> -v /my/own/liferaydatadir:/opt/liferay/data/document_library -d %%IMAGE%%:<tag>
 ```
-The `-v /my/own/datadir:/opt/liferay/data/document_library` part of the command mounts the `/my/own/datadir` directory from the underlying host system as `/opt/liferay/data/document_library` inside the container, where Liferay Portal by default will store its documents and media files.
+The `-v /my/own/liferaydatadir:/opt/liferay/data/document_library` part of the command mounts the `/my/own/liferaydatadir` directory from the underlying host system as `/opt/liferay/data/document_library` inside the container, where Liferay Portal by default will store its documents and media files.
 
 ### Caveat
 Do not use the default in-memory database(H2) when storing document and media files on the host system. You should configure your `liferay-portal` instance to use an external data source, e.g. MySQL.  
