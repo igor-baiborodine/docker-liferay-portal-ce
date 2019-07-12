@@ -9,9 +9,9 @@ services:
       - "3306:3306"
       - "33060:33060"
     volumes:
-      - ./my/own/mysql/data:/var/lib/mysql
-      - ./my/own/mysql/conf.d:/etc/mysql/conf.d
-      - ./my/own/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./mount/mysql/data:/var/lib/mysql
+      - ./mount/mysql/conf.d:/etc/mysql/conf.d
+      - ./mount/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
   liferay:
@@ -27,7 +27,7 @@ services:
       - "80:8080"
       - "11311:11311"
     volumes:
-      - ./my/own/liferay/base:/etc/opt/liferay
-      - ./my/own/liferay/data/document_library:/opt/liferay/data/document_library
-      - ./my/own/liferay/deploy:/opt/liferay/deploy
+      - ./mount/liferay/base:/etc/opt/liferay
+      - ./mount/liferay/data/document_library:/opt/liferay/data/document_library
+      - ./mount/liferay/deploy:/opt/liferay/deploy
     restart: unless-stopped

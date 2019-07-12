@@ -1,1 +1,4 @@
 docker-liferay-portal-ce.iml
+
+compose/liferay-mysql/mount/liferay/data/document_library
+compose/liferay-mysql/mount/mysql/data
