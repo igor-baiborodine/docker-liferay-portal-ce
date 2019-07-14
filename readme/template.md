@@ -7,6 +7,8 @@ Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?bran
 
 %%TAGS%%
 
+`Dockerfile` links for previously supported tags can be found [here](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/readme/previously-supported-tags.md).
+
 # Quick reference
 
 -	**Where to get help**:  
