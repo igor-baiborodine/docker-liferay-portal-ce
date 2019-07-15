@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   mysql:
@@ -12,7 +12,6 @@ services:
       - ./mnt/mysql/data:/var/lib/mysql
       - ./mnt/mysql/conf.d:/etc/mysql/conf.d
       - ./mnt/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    restart: unless-stopped
 
   liferay:
     image: ibaiborodine/liferay-portal-ce
@@ -30,4 +29,3 @@ services:
       - ./mnt/liferay/base:/etc/opt/liferay
       - ./mnt/liferay/data/document_library:/opt/liferay/data/document_library
       - ./mnt/liferay/deploy:/opt/liferay/deploy
-    restart: unless-stopped
