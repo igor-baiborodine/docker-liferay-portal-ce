@@ -11,7 +11,7 @@ services:
     volumes:
       - ./mnt/mysql/data:/var/lib/mysql
       - ./mnt/mysql/conf.d:/etc/mysql/conf.d
-      - ./mnt/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./mnt/mysql/initdb.d:/docker-entrypoint-initdb.d
 
   liferay:
     image: ibaiborodine/liferay-portal-ce
