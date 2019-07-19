@@ -76,12 +76,11 @@ $ docker run --name <container name> -d ibaiborodine/liferay-portal-ce:<tag> cat
 Example `docker-compose.yml` for `liferay-portal`:
 
 ```yaml
-version: '3'
+version: '3.7'
 
 services:
   liferay:
     image: ibaiborodine/liferay-portal-ce
-    restart: unless-stopped
     environment:
       LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED: "false"
       LIFERAY_TERMS_PERIOD_OF_PERIOD_USE_PERIOD_REQUIRED: "false"
@@ -92,6 +91,8 @@ services:
 ```
 
 Run `docker-compose -f docker-compose.yml up`, wait for it to initialize completely, and visit `http://localhost:80` or `http://host-ip:80` (as appropriate).
+
+Other `docker-compose.yml` examples: [Liferay/MySQL](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql/docker-compose.yml), [Liferay/MySQL/ElasticSearch](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql-elasticsearch/docker-compose.yml)
 
 ## Check the Tomcat version information
 ```console
