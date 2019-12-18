@@ -5,11 +5,7 @@ Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?bran
 
 # Supported tags and respective `Dockerfile` links
 
--  [`7.2.0-ga1-jdk11` (*7.2.0-ga1/jdk11/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/ec29396a3bd0549384b1a659b0f38c07f2b6a44d/7.2.0-ga1/jdk11/Dockerfile)
--  [`7.2.0-ga1-jdk8` (*7.2.0-ga1/jdk8/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/d301c6f056592787f0d4240bc36bba9d15ac64e1/7.2.0-ga1/jdk8/Dockerfile)
--  [`7.2.0-ga1-jdk11-slim` (*7.2.0-ga1/jdk11-slim/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/97fb1e864a292da7726fcdfc8312557adf2747dc/7.2.0-ga1/jdk11-slim/Dockerfile)
--  [`7.2.0-ga1-jdk8-slim` (*7.2.0-ga1/jdk8-slim/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/0aabb54b8bfa82077b73c0716db48e002c02f30e/7.2.0-ga1/jdk8-slim/Dockerfile)
--  [`7.2.0-ga1-jdk8-alpine` (*7.2.0-ga1/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/bacd734d7318baab3a5ff891a5a44f94c0094361/7.2.0-ga1/jdk8-alpine/Dockerfile)
+-  [`7.2.1-ga2-jdk8-alpine` (*7.2.1-ga2/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/a5e4a4bcc29db13a3b51a38ffc9e2b74ae19e530/7.2.1-ga2/jdk8-alpine/Dockerfile)
 
 `Dockerfile` links for previously supported tags can be found [here](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/readme/previously-supported-tags.md).
 
