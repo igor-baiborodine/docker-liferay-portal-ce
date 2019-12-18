@@ -7,8 +7,8 @@
 ################################################################################
 FROM openjdk:8-jdk-alpine AS builder
 
-ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.2.0-ga1/liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761.tar.gz
-ENV LIFERAY_DOWNLOAD_MD5 e68ab5dae19063924ae8d7e7ea0078fa
+ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.2.1-ga2/liferay-ce-portal-tomcat-7.2.1-ga2-20191111141448326.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5 ce6baa9ae3590df46760443e80c09831
 
 RUN set -ex; \
     wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL"; \
@@ -33,7 +33,7 @@ RUN set -ex; \
     ttf-dejavu \
     bash
 
-ENV LIFERAY_VERSION 7.2.0-ga1
+ENV LIFERAY_VERSION 7.2.1-ga2
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
