@@ -1,58 +1,51 @@
 ################################################################################
-# This Dockerfile was generated from the template at ../../Dockerfile.template
+# This Dockerfile was generated from the template at ../../Dockerfile-alpine.template
 #
 # Beginning of multi-stage Dockerfile
 #
 # Build stage 0: builder
 ################################################################################
-FROM openjdk:11-jdk AS builder
+FROM openjdk:8-jdk-alpine AS builder
 
-ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.2.1-ga2/liferay-ce-portal-tomcat-7.2.1-ga2-20191111141448326.tar.gz
-ENV LIFERAY_DOWNLOAD_MD5 ce6baa9ae3590df46760443e80c09831
+ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.3.0-ga1/liferay-ce-portal-tomcat-7.3.0-ga1-20200127150653953.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5 cfe948da119068c918251b733c1c0364
 
 RUN set -ex; \
-    wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL" -q --show-progress --progress=bar:force 2>&1; \
-    echo "$LIFERAY_DOWNLOAD_MD5 liferay-bundle.tar.gz" | md5sum -c -; \
+    wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL"; \
+    echo "$LIFERAY_DOWNLOAD_MD5  liferay-bundle.tar.gz" | md5sum -c -; \
     mkdir /tmp/liferay-bundle; \
-    tar -zxf liferay-bundle.tar.gz -C /tmp/liferay-bundle --strip-components=1; \
-    # download a stretch-backport version of tomcat-native library
-    # since stretch's package repo contains an incompatible version (1.2.12)
-    wget -O /tmp/libtcnative-1.deb 'http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_1.2.21-1~bpo9+1_amd64.deb' -q --show-progress --progress=bar:force 2>&1
+    tar -zxf liferay-bundle.tar.gz -C /tmp/liferay-bundle --strip-components=1
 
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
 ################################################################################
-FROM openjdk:11-jdk
+FROM openjdk:8-jdk-alpine
 
-RUN groupadd liferay && useradd -g liferay liferay
+RUN addgroup liferay && adduser -D -G liferay liferay
 
 RUN set -ex; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
+    apk add --no-cache \
     # su tool for easy step-down from root
-    gosu \
+    'su-exec>=0.2' \
+    # Tomcat native library using the Apache Portable Runtime
+    tomcat-native \
     # Font family based on the Bitstream Vera Fonts with a wider range of characters
-    ttf-dejavu; \
-    rm -rf /var/lib/apt/lists/*; \
-    gosu nobody true
+    ttf-dejavu \
+    bash
 
-ENV LIFERAY_VERSION 7.2.1-ga2
+ENV LIFERAY_VERSION 7.3.0-ga1
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
 ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
-COPY --from=builder /tmp/libtcnative-1.deb .
 
 RUN set -ex \
     && path=$(find "$(cd ..; pwd)" -name "catalina.sh") \
     && ln -s "${path%%/bin*}" "$LIFERAY_HOME/tomcat" \
-    && mkdir -p "$LIFERAY_BASE" "$LIFERAY_INIT" \
-    && chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT" \
-    && dpkg -i libtcnative-1.deb \
-    && rm libtcnative-1.deb
+    && mkdir -p "$LIFERAY_BASE" "$LIFERAY_INIT"\
+    && chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT"
 
 RUN set -e \
     && native_lines="$(catalina.sh configtest 2>&1)" \
