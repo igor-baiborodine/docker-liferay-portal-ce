@@ -7,8 +7,8 @@
 ################################################################################
 FROM openjdk:8-jdk-slim AS builder
 
-ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.2.0-ga1/liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761.tar.gz
-ENV LIFERAY_DOWNLOAD_MD5 e68ab5dae19063924ae8d7e7ea0078fa
+ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.2.1-ga2/liferay-ce-portal-tomcat-7.2.1-ga2-20191111141448326.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5 ce6baa9ae3590df46760443e80c09831
 
 RUN set -ex; \
     apt-get update; \
@@ -42,11 +42,12 @@ RUN set -ex; \
     rm -rf /var/lib/apt/lists/*; \
     gosu nobody true
 
-ENV LIFERAY_VERSION 7.2.0-ga1
+ENV LIFERAY_VERSION 7.2.1-ga2
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
 ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 COPY --from=builder /tmp/libtcnative-1.deb .
@@ -57,7 +58,6 @@ RUN set -ex \
     && mkdir -p "$LIFERAY_BASE" "$LIFERAY_INIT" \
     && chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT" \
     && dpkg -i libtcnative-1.deb \
-    && ln -s /usr/lib/x86_64-linux-gnu/libtcnative-1.so /usr/lib/libtcnative-1.so \
     && rm libtcnative-1.deb
 
 RUN set -e \

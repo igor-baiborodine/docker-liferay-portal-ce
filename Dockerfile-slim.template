@@ -47,6 +47,7 @@ ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
 ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 COPY --from=builder /tmp/libtcnative-1.deb .
@@ -57,7 +58,6 @@ RUN set -ex \
     && mkdir -p "$LIFERAY_BASE" "$LIFERAY_INIT" \
     && chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT" \
     && dpkg -i libtcnative-1.deb \
-    && ln -s /usr/lib/x86_64-linux-gnu/libtcnative-1.so /usr/lib/libtcnative-1.so \
     && rm libtcnative-1.deb
 
 RUN set -e \
