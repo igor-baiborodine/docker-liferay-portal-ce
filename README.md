@@ -5,6 +5,7 @@ Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?bran
 
 # Supported tags and respective `Dockerfile` links
 
+-  [`7.3.0-ga1-jdk8-slim` (*7.3.0-ga1/jdk8-slim/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/d57def8f5d10f99a8bed444171ce85c40d45e52d/7.3.0-ga1/jdk8-slim/Dockerfile)
 -  [`7.3.0-ga1-jdk8-alpine` (*7.3.0-ga1/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/c67464f22af2178ed0c7c214d803f72d99f0fe47/7.3.0-ga1/jdk8-alpine/Dockerfile)
 
 `Dockerfile` links for previously supported tags can be found [here](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/readme/previously-supported-tags.md).
@@ -62,7 +63,7 @@ $ docker run --name <container name> -p 80:8080 -d ibaiborodine/liferay-portal-c
 ```
 You can then go to `http://localhost:80` or `http://host-ip:80` in a browser.
 
-If you want to start a `liferay-instance` instance in debug mode, execute the following:
+If you want to start a `liferay-instance` in debug mode, execute the following:
 ```console
 $ docker run --name <container name> -d ibaiborodine/liferay-portal-ce:<tag> catalina.sh jpda run
 ```
