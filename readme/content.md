@@ -31,7 +31,7 @@ $ docker run --name <container name> -p 80:8080 -d %%IMAGE%%:<tag>
 ```
 You can then go to `http://localhost:80` or `http://host-ip:80` in a browser.
 
-If you want to start a `liferay-instance` instance in debug mode, execute the following:
+If you want to start a `liferay-instance` in debug mode, execute the following:
 ```console
 $ docker run --name <container name> -d %%IMAGE%%:<tag> catalina.sh jpda run
 ```
