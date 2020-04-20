@@ -88,32 +88,35 @@ sed \
   > "$release_dir/docker-entrypoint.sh"
 chmod +x "$release_dir/docker-entrypoint.sh"
 
-if [[ "$dry_run" == false ]]; then
-  travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
-  echo "Modifying .travis.yml with new VERSION/VARIANT[$version/$variant]..."
-  echo "$travis" >.travis.yml
-
-  if [[ -f ./supported-tags ]]; then
-    if grep -q "$version" ./supported-tags; then
-      echo "Found in supported-tags: release[$version]"
-      echo "$new_supported_tag" >>./supported-tags
-    else
-      echo "Not found in supported-tags: release[$version]"
-      echo "$new_supported_tag" >./supported-tags
-
-      for release_dir in $(ls -d [7-9]*/); do
-        if [[ ${new_supported_tag} != "$release_dir"* ]]; then
-          echo "Removing directory: release[$release_dir]..."
-          rm -rf "$release_dir"
-        fi
-      done
-    fi
-  else
-    echo "Creating supported-tags file..."
-    echo "$new_supported_tag" >./supported-tags
-  fi
-
-  git add .
-  git commit -m "Add new supported tag [$new_supported_tag]"
-  git push
+if [[ "$dry_run" == true ]]; then
+  echo "Dry run completed"
+  exit 0
 fi
+
+travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
+echo "Modifying .travis.yml with new VERSION/VARIANT[$version/$variant]..."
+echo "$travis" >.travis.yml
+
+if [[ -f ./supported-tags ]]; then
+  if grep -q "$version" ./supported-tags; then
+    echo "Found in supported-tags: release[$version]"
+    echo "$new_supported_tag" >>./supported-tags
+  else
+    echo "Not found in supported-tags: release[$version]"
+    echo "$new_supported_tag" >./supported-tags
+
+    for release_dir in $(ls -d [7-9]*/); do
+      if [[ ${new_supported_tag} != "$release_dir"* ]]; then
+        echo "Removing directory: release[$release_dir]..."
+        rm -rf "$release_dir"
+      fi
+    done
+  fi
+else
+  echo "Creating supported-tags file..."
+  echo "$new_supported_tag" >./supported-tags
+fi
+
+git add .
+git commit -m "Add new supported tag [$new_supported_tag]"
+git push
