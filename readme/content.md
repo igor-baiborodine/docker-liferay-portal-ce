@@ -18,7 +18,7 @@ $ docker run --name <container name> -d %%IMAGE%%:<tag>
 
 ... where `<container name>` is the name you want to assign to your container and `<tag>` is the tag specifying the Liferay Portal CE version you want. See the list above for relevant tags.
 
-The default Liferay Portal configuration contains an embedded Hypersonic database instance and an embedded Elasticsearch instance. Please note that this setup is not suitable for production.
+The default Liferay Portal configuration contains embedded Hypersonic database and Elasticsearch instances. Please note that this setup is not suitable for production.
 
 You can test it by visiting `http://container-ip:8080` in a browser. To get the container IP address, you can execute the following command:
 ```console
