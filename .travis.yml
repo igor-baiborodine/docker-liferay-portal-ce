@@ -13,6 +13,7 @@ install:
 
 before_script:
   - image="$DOCKER_USERNAME/liferay-portal-ce:$VERSION-$VARIANT"
+  - latest_image="$DOCKER_USERNAME/liferay-portal-ce:latest"
 
 script:
   - |
@@ -22,6 +23,8 @@ script:
       docker build -t "$image" ./"$VERSION/$VARIANT"
       ~/official-images/test/run.sh "$image"
       docker push "$image"
+      docker tag "$image" "$latest_image"
+      docker push "$latest_image"
       ./readme/generate-readme.sh "$VERSION/$VARIANT" "$TRAVIS_COMMIT"
       git status
     )
