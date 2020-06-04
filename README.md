@@ -3,6 +3,9 @@
 Last added tag: [![Build
 Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?branch=master)](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce)
 
+#### Developed with
+![IntelliJ IDEA Logo](https://www.kiroule.com/img/content/page/projects/intellij-idea-logo.png)
+
 # Supported tags and respective `Dockerfile` links
 
 -  [`7.3.1-ga2-jdk11, latest` (*7.3.1-ga2/jdk11/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/f04010761d17447d7c1100b63e71f8ff5531442d/7.3.1-ga2/jdk11/Dockerfile)
