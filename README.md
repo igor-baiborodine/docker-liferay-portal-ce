@@ -1,9 +1,9 @@
 # [https://hub.docker.com/r/ibaiborodine/liferay-portal-ce](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
  
-Last added tag: [![Build
+**Last added tag:** [![Build
 Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?branch=master)](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce)
 
-#### Developed with
+#### Developed with pleasure!
 ![IntelliJ IDEA Logo](https://www.kiroule.com/img/content/page/projects/intellij-idea-logo.png)
 
 # Supported tags and respective `Dockerfile` links
