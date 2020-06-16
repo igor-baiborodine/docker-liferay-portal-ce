@@ -57,16 +57,15 @@ $ docker run --name <container name> -d ibaiborodine/liferay-portal-ce:<tag>
 
 The default Liferay Portal configuration contains embedded Hypersonic database and Elasticsearch instances. Please note that this setup is not suitable for production.
 
-You can test it by visiting `http://container-ip:8080` in a browser. To get the container IP address, you can execute the following command:
+You can test it at `http://container-ip:8080` in a browser. To get the container IP address, execute the following command:
 ```console
-$ docker exec <container name> -it ifconfig
+$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container name>
 ```
-... or, if you need access outside the host, on port 80:
-
+... or via the host machine on port 80:
 ```console
 $ docker run --name <container name> -p 80:8080 -d ibaiborodine/liferay-portal-ce:<tag>
 ```
-You can then go to `http://localhost:80` or `http://host-ip:80` in a browser.
+Then test it at `http://localhost:80` or `http://host-ip:80` in a browser.
 
 If you want to start a `liferay-instance` in debug mode, execute the following:
 ```console
@@ -92,9 +91,9 @@ services:
       - "80:8080"
 ```
 
-Run `docker-compose -f docker-compose.yml up`, wait for it to initialize completely, and visit `http://localhost:80` or `http://host-ip:80` (as appropriate).
+Run `docker-compose -f docker-compose.yml up`, wait for it to initialize completely, and visit at `http://localhost:80` or `http://host-ip:80` (as appropriate).
 
-Other `docker-compose.yml` examples: [Liferay/MySQL](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql/docker-compose.yml), [Liferay/MySQL/ElasticSearch](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql-elasticsearch/docker-compose.yml)
+Additional `docker-compose` examples: [Liferay/MySQL](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql/docker-compose.yml), [Liferay/MySQL/ElasticSearch](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql-elasticsearch/docker-compose.yml)
 
 ## Check the Tomcat version information
 ```console
@@ -102,18 +101,18 @@ $ docker run --rm -it ibaiborodine/liferay-portal-ce:<tag> version.sh | grep 'Se
 ``` 
 
 ## Container shell access and viewing Liferay Portal logs
-The `docker exec` command allows you to run commands inside a Docker container. The following command line will give you a bash shell inside your `liferay-portal` container:
+The `docker exec` command allows you to run commands inside a Docker container. The following command will give you a bash shell inside your `liferay-portal` container:
 ```console
 $ docker exec -it <container name> bash
 ```
 
-The Liferay Portal log is available through Docker's container log:
+The Liferay Portal log is available via the `docker logs` command:
 ```console
 $ docker logs -f <container name>
 ```
 
 ## Configure Liferay Portal via environment variables
-You can override [portal.properties](https://github.com/liferay/liferay-portal/blob/master/portal-impl/src/portal.properties) by specifying corresponding environment variables, e.g.:
+You can override [portal.properties](https://github.com/liferay/liferay-portal/blob/master/portal-impl/src/portal.properties) by specifying corresponding environment variables, for example:
 ```properties
 #
 # Set this property to true if the Setup Wizard should be displayed the
@@ -123,15 +122,15 @@ You can override [portal.properties](https://github.com/liferay/liferay-portal/b
 #
 setup.wizard.enabled=true
 ```
-To override `setup.wizard.enabled` property, set `LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED` environment variable to `false` when starting a new container: 
+To override the `setup.wizard.enabled` property, set the `LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED` environment variable to `false` when running a new container: 
 ```console
 $ docker run --name <container name> -p 80:8080 -it \ 
     --env LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false ibaiborodine/liferay-portal-ce:<tag>
 ```
-Also, the environment variables can be set via docker-compose.yml (see example above) or by extending this image (see example below). 
+Also, the environment variables can be set via the `docker-compose.yml` (see example above) or by extending this image (see example below). 
 
 ## Health check
-This image does not contain an explicit health check. To add a health check, you can start your `liferay-portal` instance with `--health-*` options:
+This image does not contain an explicit health check. To add a health check, you can run your `liferay-portal` instance with the `--health-*` options:
 ```console
 $ docker run --name <container name> -d \ 
     --health-cmd='curl -fsS "http://localhost:8080/c/portal/layout" || exit 1' \
@@ -140,7 +139,7 @@ $ docker run --name <container name> -d \
     --health-retries=3 \
     ibaiborodine/liferay-portal-ce:<tag> 
 ```
-... or by extending this image. For a more detailed explanation about why this image does not come with a default `HEALTHCHECK` defined, and for suggestions to implement your own health/liveness/readiness checks, you can read [here](https://github.com/docker-library/faq#healthcheck).
+... or by extending this image. For a more detailed explanation about why this image does not come with a default `HEALTHCHECK` defined, and for suggestions on how to implement your own health/liveness/readiness checks, read [here](https://github.com/docker-library/faq#healthcheck).
 
 ## Deploy modules to a running `liferay-portal` instance
 This image exposes an optional `VOLUME` to allow deploying modules to a running container. To enable this option, you will need to:
@@ -152,7 +151,7 @@ $ docker run --name <container name> -v /my/own/deploydir:/opt/liferay/deploy -d
 The `-v /my/own/deploydir:/opt/liferay/deploy` part of the command mounts the `/my/own/deploydir` directory from the underlying host system as `/opt/liferay/deploy` inside the container to scan for layout templates, portlets, and themes to auto-deploy.
 
 ## Where to store documents and media files
-By default, Liferay Portal uses a document library store option called Simple File Store to store documents and media files on a file system (local or mounted). The store's default root folder is `LIFERAY_HOME/data/document_library`.
+By default, Liferay Portal uses a document library store option called `Simple File Store` to store documents and media files on a file system (local or mounted). The store's default root folder is `LIFERAY_HOME/data/document_library`.
 There are several ways to store data used by applications that run in Docker containers. One of the options is to create a data directory on the host system (outside the container) and mount this to a directory visible from inside the container. This places the document and media files in a known location on the host system and makes it easy for tools and applications on the host system to access the files. The downside is that the user needs to make sure that the directory exists and that directory permissions and other security mechanisms on the host system are set up correctly.
 
 You will need to:
@@ -169,7 +168,7 @@ Do not use the default in-memory database(H2) when storing document and media fi
 # How to Extend This Image
 
 ## Environment variables
-If you would like to override the default configuration, i.e. portal.properties, you can do that by specifying corresponding environment variables in an image derived from this one:
+If you would like to override the default configuration, i.e. portal properties, you can do that by specifying corresponding environment variables in an image derived from this one:
 ```dockerfile
 FROM ibaiborodine/liferay-portal-ce:<tag>
 
@@ -208,6 +207,20 @@ $ docker run --name <container name> -v /my/own/liferayinitdir:/docker-entrypoin
 The `-v /my/own/liferayinitdir:/docker-entrypoint-initliferay.d` part of the command mounts the `/my/own/liferayinitdir` directory from the underlying host system as `/docker-entrypoint-initliferay.d` inside the container.
 
 All shell scripts placed into the `/my/own/liferayinitdir` directory will be executed before Liferay Portal starts.
+
+# Image Variants
+
+## `ibaiborodine/liferay-portal-ce:<version>-<jdk>`
+
+This is the defacto image which is based on [Debian Linux](https://www.debian.org/)(currently `Buster` release). If you are unsure about what your needs are, you probably want to use this one. It is designed to be used both as a throw away container (mount your source code and start the container to start your app), as well as the base to build other images off of.
+
+## `ibaiborodine/liferay-portal-ce:<version>-<jdk>-alpine`
+
+This image is based on the popular [Alpine Linux project](http://alpinelinux.org), available in [the `alpine` official image](https://hub.docker.com/_/alpine). Alpine Linux is much smaller than most distribution base images (~5MB), and thus leads to much slimmer images in general.
+
+This variant is highly recommended when final image size being as small as possible is desired. The main caveat to note is that it does use [musl libc](http://www.musl-libc.org) instead of [glibc and friends](http://www.etalabs.net/compare_libcs.html), so certain software might run into issues depending on the depth of their libc requirements. However, most software doesn't have an issue with this, so this variant is usually a very safe choice. See [this Hacker News comment thread](https://news.ycombinator.com/item?id=10782897) for more discussion of the issues that might arise and some pro/con comparisons of using Alpine-based images.
+
+To minimize image size, it's uncommon for additional related tools (such as `git` or `bash`) to be included in Alpine-based images. Using this image as a base, add the things you need in your own Dockerfile (see the [`alpine` image description](https://hub.docker.com/_/alpine/) for examples of how to install packages if you are unfamiliar).
 
 # Image Variants
 
