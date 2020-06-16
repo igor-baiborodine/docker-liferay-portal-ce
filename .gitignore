@@ -4,3 +4,5 @@ compose/liferay-mysql/mnt/liferay/data/document_library
 compose/liferay-mysql/mnt/mysql/data
 
 dry-run
+
+*.tar.gz

@@ -10,14 +10,12 @@ FROM %%BASE_IMAGE%% AS builder
 ENV LIFERAY_DOWNLOAD_URL %%LIFERAY_DOWNLOAD_URL%%
 ENV LIFERAY_DOWNLOAD_MD5 %%LIFERAY_DOWNLOAD_MD5%%
 
-RUN set -ex; \
-    wget -O liferay-bundle.tar.gz "$LIFERAY_DOWNLOAD_URL" -q --show-progress --progress=bar:force 2>&1; \
-    echo "$LIFERAY_DOWNLOAD_MD5 liferay-bundle.tar.gz" | md5sum -c -; \
-    mkdir /tmp/liferay-bundle; \
-    tar -zxf liferay-bundle.tar.gz -C /tmp/liferay-bundle --strip-components=1; \
-    # download a stretch-backport version of tomcat-native library
-    # since stretch's package repo contains an incompatible version (1.2.12)
-    wget -O /tmp/libtcnative-1.deb 'http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_1.2.21-1~bpo9+1_amd64.deb' -q --show-progress --progress=bar:force 2>&1
+COPY "$LIFERAY_DOWNLOAD_URL" liferay-bundle.tar.gz
+
+RUN set -ex \
+    && echo "$LIFERAY_DOWNLOAD_MD5  liferay-bundle.tar.gz" | md5sum -c - \
+    && mkdir /tmp/liferay-bundle \
+    && tar -zxf liferay-bundle.tar.gz -C /tmp/liferay-bundle --strip-components=1
 
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
@@ -26,15 +24,18 @@ FROM %%BASE_IMAGE%%
 
 RUN groupadd liferay && useradd -g liferay liferay
 
-RUN set -ex; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-    # su tool for easy step-down from root
-    gosu \
-    # Font family based on the Bitstream Vera Fonts with a wider range of characters
-    ttf-dejavu; \
-    rm -rf /var/lib/apt/lists/*; \
-    gosu nobody true
+RUN set -ex \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+      # su tool for easy step-down from root
+      gosu \
+      # Font family based on the Bitstream Vera Fonts with a wider range of characters
+      ttf-dejavu \
+    && rm -rf /var/lib/apt/lists/* \
+    && gosu nobody true \
+    && wget -O libtcnative-1.deb 'http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_1.2.21-1_amd64.deb' -q --show-progress --progress=bar:force 2>&1 \
+    && dpkg -i libtcnative-1.deb \
+    && rm libtcnative-1.deb
 
 ENV LIFERAY_VERSION %%LIFERAY_VERSION%%
 ENV LIFERAY_HOME /opt/liferay
@@ -44,15 +45,12 @@ ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
-COPY --from=builder /tmp/libtcnative-1.deb .
 
 RUN set -ex \
     && path=$(find "$(cd ..; pwd)" -name "catalina.sh") \
     && ln -s "${path%%/bin*}" "$LIFERAY_HOME/tomcat" \
     && mkdir -p "$LIFERAY_BASE" "$LIFERAY_INIT" \
-    && chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT" \
-    && dpkg -i libtcnative-1.deb \
-    && rm libtcnative-1.deb
+    && chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT"
 
 RUN set -e \
     && native_lines="$(catalina.sh configtest 2>&1)" \

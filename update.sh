@@ -2,18 +2,23 @@
 set -eo pipefail
 
 dry_run=false
+usage() { echo "Usage: $0 -t <tag> [-p <path>] [-d]" 1>&2; exit 1; }
 
-while getopts ":t:d" opt; do
+while getopts "dt:p:" opt; do
   case $opt in
-  t)
-    new_supported_tag="$OPTARG"
-    ;;
   d)
     dry_run=true
     dry_run_dir=dry-run
     ;;
-  \?)
-    echo "Invalid option: -$OPTARG" >&2
+  t)
+    new_supported_tag="$OPTARG"
+    ;;
+  p)
+    # path to a previously downloaded Liferay bundle
+    liferay_local_path="$OPTARG"
+    ;;
+  *)
+    usage
     ;;
   esac
 done
@@ -68,6 +73,11 @@ if [[ "$dry_run" == true ]]; then
   release_dir="$dry_run_dir/$release_dir"
 fi
 mkdir -p "$release_dir"
+
+if [[ -n "$liferay_local_path" ]]; then
+  download_url="$liferay_local_path"
+  echo "download_url: $download_url"
+fi
 
 sed \
   -e 's!%%BASE_IMAGE%%!'"$base_image"'!g' \
