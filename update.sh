@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+replace_field() {
+  local target_file="$1"
+  local field="$2"
+  local content="$3"
+
+  local extra_sed="${4:-}"
+  local sed_escaped_value
+  sed_escaped_value="$(echo "$content" | sed 's/[\/&]/\\&/g')"
+  sed_escaped_value="${sed_escaped_value//$'\n'/\\n}"
+  sed -ri -e "s/${extra_sed}%%${field}%%${extra_sed}/$sed_escaped_value/g" "$target_file"
+}
+
 dry_run=false
 usage() { echo "Usage: $0 -t <tag> [-p <path>] [-d]" 1>&2; exit 1; }
 
@@ -39,15 +51,18 @@ if [[ "$java_variant" != jdk* ]]; then
 fi
 
 os_variant="${variant#$java_variant-}"
+partial_template="Dockerfile-${os_variant}-partial.template"
 
 if [[ "${os_variant}" == "${java_variant}" ]]; then
   os_variant=
+  partial_template='Dockerfile-partial.template'
 fi
 
 echo "version: $version
 variant: $variant
 java_variant: $java_variant
-os_variant: $os_variant"
+os_variant: $os_variant
+partial_template: $partial_template"
 
 # e.g., openjdk:8-jdk, openjdk:8-jdk-alpine, openjdk:11-jdk-slim
 base_image="openjdk:${java_variant:3}-${java_variant:0:3}${os_variant:+-$os_variant}"
@@ -79,23 +94,20 @@ if [[ -n "$liferay_local_path" ]]; then
   echo "download_url: $download_url"
 fi
 
-sed \
-  -e 's!%%BASE_IMAGE%%!'"$base_image"'!g' \
-  -e 's!%%LIFERAY_VERSION%%!'"$version"'!g' \
-  -e 's!%%LIFERAY_DOWNLOAD_URL%%!'"$download_url"'!g' \
-  -e 's!%%LIFERAY_DOWNLOAD_MD5%%!'"$md5"'!g' \
-  "Dockerfile${os_variant:+-$os_variant}.template" \
-  > "$release_dir/Dockerfile"
+cat "Dockerfile.template" > "$release_dir/Dockerfile"
+replace_field "$release_dir/Dockerfile" 'PARTIAL_TEMPLATE' "$(cat "$partial_template")"
+replace_field "$release_dir/Dockerfile" 'BASE_IMAGE' "$base_image"
+replace_field "$release_dir/Dockerfile" 'LIFERAY_VERSION' "$version"
+replace_field "$release_dir/Dockerfile" 'LIFERAY_DOWNLOAD_URL' "$download_url"
+replace_field "$release_dir/Dockerfile" 'LIFERAY_DOWNLOAD_MD5' "$md5"
 
 su_tool=gosu
 if [[ ${os_variant} == alpine ]]; then
   su_tool=su-exec
 fi
 
-sed \
-  -e 's!%%SU_TOOL%%!'"$su_tool"'!g' \
-  docker-entrypoint.template \
-  > "$release_dir/docker-entrypoint.sh"
+cat docker-entrypoint.template > "$release_dir/docker-entrypoint.sh"
+replace_field "$release_dir/docker-entrypoint.sh" 'SU_TOOL' "$su_tool"
 chmod +x "$release_dir/docker-entrypoint.sh"
 
 if [[ "$dry_run" == true ]]; then
