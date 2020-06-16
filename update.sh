@@ -110,13 +110,14 @@ cat docker-entrypoint.template > "$release_dir/docker-entrypoint.sh"
 replace_field "$release_dir/docker-entrypoint.sh" 'SU_TOOL' "$su_tool"
 chmod +x "$release_dir/docker-entrypoint.sh"
 
+travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
+echo "Modifying .travis.yml with new VERSION/VARIANT[$version/$variant]..."
+
 if [[ "$dry_run" == true ]]; then
+  echo "$travis" > "$release_dir/.travis.yml"
   echo "Dry run completed"
   exit 0
 fi
-
-travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
-echo "Modifying .travis.yml with new VERSION/VARIANT[$version/$variant]..."
 echo "$travis" >.travis.yml
 
 if [[ -f ./supported-tags ]]; then
