@@ -28,10 +28,10 @@ script:
       docker push "$image"
       docker tag "$image" "$latest_image"
       docker push "$latest_image"
-      ./readme/generate-readme.sh "$VERSION/$VARIANT" "$TRAVIS_COMMIT"
+      ./scripts/generate-readme.sh "$VERSION/$VARIANT" "$TRAVIS_COMMIT"
       git status
     )
 
 after_success:
   - docker images
-  - ./push-remote.sh
+  - ./scripts/push-remote.sh
