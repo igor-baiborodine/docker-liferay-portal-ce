@@ -14,7 +14,7 @@ main() {
     case $opt in
     d)
       dry_run=true
-      dry_run_dir=dry-run
+      dry_run_dir="$PWD/dry-run"
       ;;
     t)
       new_supported_tag="$OPTARG"
@@ -52,11 +52,11 @@ main() {
     partial_template='Dockerfile-partial.template'
   fi
 
-  echo "version: $version
-variant: $variant
-java_variant: $java_variant
-os_variant: $os_variant
-partial_template: $partial_template"
+  printf "%s\n" "version: $version" \
+    "variant: $variant" \
+    "java_variant: $java_variant" \
+    "os_variant: $os_variant" \
+    "partial_template: $partial_template"
 
   # e.g., openjdk:8-jdk, openjdk:8-jdk-alpine, openjdk:11-jdk-slim
   base_image="openjdk:${java_variant:3}-${java_variant:0:3}${os_variant:+-$os_variant}"
