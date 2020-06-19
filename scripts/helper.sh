@@ -9,3 +9,10 @@ function replace_field() {
   sed_escaped_value="${sed_escaped_value//$'\n'/\\n}"
   sed -ri -e "s/${extra_sed}%%${field}%%${extra_sed}/$sed_escaped_value/g" "$target_file"
 }
+
+function check_not_empty() {
+  if [[ -z "$1" ]]; then
+    echo "$2 cannot be empty!"
+    exit 1
+  fi
+}

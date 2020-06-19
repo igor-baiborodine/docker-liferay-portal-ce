@@ -28,7 +28,7 @@ script:
       docker push "$image"
       docker tag "$image" "$latest_image"
       docker push "$latest_image"
-      ./scripts/generate-readme.sh "$VERSION/$VARIANT" "$TRAVIS_COMMIT"
+      ./scripts/generate-readme.sh -t "$VERSION/$VARIANT" -c "$TRAVIS_COMMIT"
       git status
     )
 

@@ -1,33 +1,59 @@
 #!/usr/bin/env bash
 
-set -e
+set -eo pipefail
 source $(dirname "$0")/helper.sh
 
-GITHUB_REPO_URL='https://github.com/igor-baiborodine/docker-liferay-portal-ce'
-
 main() {
-  local supported_tag="$1"
-  local commit_hash="$2"
-  echo "supported_tag: $supported_tag, commit_hash: $commit_hash"
+  dry_run=false
+  work_dir="."
+  github_repo_url='https://github.com/igor-baiborodine/docker-liferay-portal-ce'
 
-  sed -i 's,^\b'"$supported_tag"'\b$,'"$supported_tag:$commit_hash"',' ./supported-tags
-  local tags_content=
+  while getopts "t:c:d" opt; do
+    case $opt in
+    t)
+      supported_tag="$OPTARG"
+      ;;
+    c)
+      commit_hash="$OPTARG"
+      ;;
+    d)
+      dry_run=true
+      work_dir="dry-run"
+      ;;
+    *)
+      usage
+      ;;
+    esac
+  done
 
-  for t in $(cat ./supported-tags); do
-    local tag="${t%%:*}"
-    local commit="${t#*:}"
+  echo "supported_tag: $supported_tag, commit_hash: $commit_hash, dry_run: $dry_run"
+
+  check_not_empty "$supported_tag" "$0[supported_tag]"
+  check_not_empty "$commit_hash" "$0[commit_hash]"
+
+  sed -i 's,^\b'"$supported_tag"'\b$,'"$supported_tag:$commit_hash"',' "$work_dir/supported-tags"
+  tags_content=
+
+  while IFS= read -r line; do
+    tag="${line%%:*}"
+    commit="${line#*:}"
     echo "tag: $tag, commit: $commit"
 
-    tags_content='-  [`'"${tag/\//-}"'` (*'"${tag}/Dockerfile"'*)]('"${GITHUB_REPO_URL}/blob/${commit}/${tag}/Dockerfile"$')\n'"$tags_content"
-  done
+    tags_content='-  [`'"${tag/\//-}"'` (*'"${tag}/Dockerfile"'*)]('"${github_repo_url}/blob/${commit}/${tag}/Dockerfile"$')\n'"$tags_content"
+  done <"$work_dir/supported-tags"
+
   echo "tags_content: $tags_content"
 
-  cat ./readme/template.md > ./README.md
-  replace_field ./README.md 'TAGS' "$tags_content"
-  replace_field ./README.md 'CONTENT' "$(cat "readme/content.md")"
-  replace_field ./README.md 'VARIANT' "$(cat "readme/variant.md")"
-  replace_field ./README.md 'LICENSE' "$(cat "readme/license.md")"
-  replace_field ./README.md 'IMAGE' 'ibaiborodine/liferay-portal-ce'
+  cat "$PWD/readme/template.md" >"$work_dir/README.md"
+  replace_field "$work_dir/README.md" 'TAGS' "$tags_content"
+  replace_field "$work_dir/README.md" 'CONTENT' "$(cat "readme/content.md")"
+  replace_field "$work_dir/README.md" 'VARIANT' "$(cat "readme/variant.md")"
+  replace_field "$work_dir/README.md" 'LICENSE' "$(cat "readme/license.md")"
+  replace_field "$work_dir/README.md" 'IMAGE' 'ibaiborodine/liferay-portal-ce'
+
+  if [[ "$dry_run" == true ]]; then
+    echo "README generation dry run completed for tag [$supported_tag]"
+  fi
 }
 
 main "$@"

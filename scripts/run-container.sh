@@ -8,14 +8,6 @@ usage() {
   exit 1
 }
 
-check_volume_dir() {
-  if [[ -z "$1" ]]; then
-    echo "volume_dir cannot be empty when use_case is $2"
-    usage
-    exit 1
-  fi
-}
-
 main() {
   liferay_home=/opt/liferay
   liferay_base=/etc/opt/liferay
@@ -84,14 +76,14 @@ main() {
   fi
 
   if [[ "$use_case" == 'deploy' ]]; then
-    check_volume_dir "$volume_dir" "$use_case"
+    check_not_empty "$volume_dir" "$0[$use_case][volume_dir]"
     mkdir -p "$volume_dir/my/own/deploydir"
     volume_option="-v $volume_dir/my/own/deploydir:$liferay_home/deploy"
     eval "${base_cmd/options/$volume_option}"
   fi
 
   if [[ "$use_case" == 'document-library' ]]; then
-    check_volume_dir "$volume_dir" "$use_case"
+    check_not_empty "$volume_dir" "$0[$use_case][volume_dir]"
     mkdir -p "$volume_dir/my/own/datadir"
     volume_option="-v $volume_dir/my/own/datadir:$liferay_home/data/document_library"
     eval "${base_cmd/options/$volume_option}"
@@ -99,14 +91,14 @@ main() {
 
   # test copying portal-ext.properties and tomcat/bin/setenv.sh
   if [[ "$use_case" == 'liferay-base' ]]; then
-    check_volume_dir "$volume_dir" "$use_case"
+    check_not_empty "$volume_dir" "$0[$use_case][volume_dir]"
     mkdir -p "$volume_dir/my/own/liferaybasedir"
     volume_option="-v $volume_dir/my/own/liferaybasedir:$liferay_base"
     eval "${base_cmd/options/$volume_option}"
   fi
 
   if [[ "$use_case" == 'liferay-init' ]]; then
-    check_volume_dir "$volume_dir" "$use_case"
+    check_not_empty "$volume_dir" "$0[$use_case][volume_dir]"
     mkdir -p "$volume_dir/my/own/liferayinitdir"
     volume_option="-v $volume_dir/my/own/liferayinitdir:$liferay_init"
     eval "${base_cmd/options/$volume_option}"

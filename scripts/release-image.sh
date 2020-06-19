@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -eo pipefail
 source $(dirname "$0")/helper.sh
 
@@ -9,13 +10,10 @@ usage() {
 
 main() {
   dry_run=false
+  work_dir="."
 
-  while getopts "dt:p:" opt; do
+  while getopts "t:p:d" opt; do
     case $opt in
-    d)
-      dry_run=true
-      dry_run_dir="$PWD/dry-run"
-      ;;
     t)
       new_supported_tag="$OPTARG"
       ;;
@@ -23,12 +21,18 @@ main() {
       # path to a previously downloaded Liferay bundle
       liferay_local_path="$OPTARG"
       ;;
+    d)
+      dry_run=true
+      work_dir="dry-run"
+      ;;
     *)
       usage
       ;;
     esac
   done
   echo "new_supported_tag:$new_supported_tag, dry_run:$dry_run"
+
+  check_not_empty "$new_supported_tag" "$0[new_supported_tag]"
 
   if [[ -d "$new_supported_tag" && "$dry_run" == false ]]; then
     echo "Already supported tag: $new_supported_tag"
@@ -58,7 +62,7 @@ main() {
     "os_variant: $os_variant" \
     "partial_template: $partial_template"
 
-  # e.g., openjdk:8-jdk, openjdk:8-jdk-alpine, openjdk:11-jdk-slim
+  # e.g., openjdk:8-jdk, openjdk:8-jdk-alpine, openjdk:11-jdk
   base_image="openjdk:${java_variant:3}-${java_variant:0:3}${os_variant:+-$os_variant}"
   echo "base_image: $base_image"
 
@@ -77,10 +81,7 @@ main() {
   echo "md5: $md5"
 
   echo "Adding Dockerfile for $version/$variant..."
-  release_dir="$version/$variant"
-  if [[ "$dry_run" == true ]]; then
-    release_dir="$dry_run_dir/$release_dir"
-  fi
+  release_dir="$work_dir/$version/$variant"
   mkdir -p "$release_dir"
 
   if [[ -n "$liferay_local_path" ]]; then
@@ -95,9 +96,9 @@ main() {
   replace_field "$release_dir/Dockerfile" 'LIFERAY_DOWNLOAD_URL' "$download_url"
   replace_field "$release_dir/Dockerfile" 'LIFERAY_DOWNLOAD_MD5' "$md5"
 
-  su_tool=gosu
+  su_tool='gosu'
   if [[ ${os_variant} == alpine ]]; then
-    su_tool=su-exec
+    su_tool='su-exec'
   fi
 
   cat docker-entrypoint.template >"$release_dir/docker-entrypoint.sh"
@@ -106,21 +107,15 @@ main() {
 
   travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
   echo "Modifying .travis.yml with new VERSION/VARIANT[$version/$variant]..."
+  echo "$travis" >"$work_dir/.travis.yml"
 
-  if [[ "$dry_run" == true ]]; then
-    echo "$travis" >"$release_dir/.travis.yml"
-    echo "Dry run completed"
-    exit 0
-  fi
-  echo "$travis" >.travis.yml
-
-  if [[ -f ./supported-tags ]]; then
-    if grep -q "$version" ./supported-tags; then
+  if [[ -f "$work_dir/supported-tags" ]]; then
+    if grep -q "$version" "$work_dir/supported-tags"; then
       echo "Found in supported-tags: release[$version]"
-      echo "$new_supported_tag" >>./supported-tags
+      echo "$new_supported_tag" >>"$work_dir/supported-tags"
     else
       echo "Not found in supported-tags: release[$version]"
-      echo "$new_supported_tag" >./supported-tags
+      echo "$new_supported_tag" >"$work_dir/supported-tags"
 
       for release_dir in $(ls -d [7-9]*/); do
         if [[ ${new_supported_tag} != "$release_dir"* ]]; then
@@ -131,7 +126,12 @@ main() {
     fi
   else
     echo "Creating supported-tags file..."
-    echo "$new_supported_tag" >./supported-tags
+    echo "$new_supported_tag" >"$work_dir/supported-tags"
+  fi
+
+  if [[ "$dry_run" == true ]]; then
+    echo "Image release dry run completed for tag [$new_supported_tag]"
+    exit 0
   fi
 
   git add .
