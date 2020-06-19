@@ -17,9 +17,9 @@ check_volume_dir() {
 }
 
 main() {
-  LIFERAY_HOME=/opt/liferay
-  LIFERAY_BASE=/etc/opt/liferay
-  LIFERAY_INIT=/docker-entrypoint-initliferay.d
+  liferay_home=/opt/liferay
+  liferay_base=/etc/opt/liferay
+  liferay_init=/docker-entrypoint-initliferay.d
 
   # run by default container in detached mode
   run_mode='-d'
@@ -86,14 +86,14 @@ main() {
   if [[ "$use_case" == 'deploy' ]]; then
     check_volume_dir "$volume_dir" "$use_case"
     mkdir -p "$volume_dir/my/own/deploydir"
-    volume_option="-v $volume_dir/my/own/deploydir:$LIFERAY_HOME/deploy"
+    volume_option="-v $volume_dir/my/own/deploydir:$liferay_home/deploy"
     eval "${base_cmd/options/$volume_option}"
   fi
 
   if [[ "$use_case" == 'document-library' ]]; then
     check_volume_dir "$volume_dir" "$use_case"
     mkdir -p "$volume_dir/my/own/datadir"
-    volume_option="-v $volume_dir/my/own/datadir:$LIFERAY_HOME/data/document_library"
+    volume_option="-v $volume_dir/my/own/datadir:$liferay_home/data/document_library"
     eval "${base_cmd/options/$volume_option}"
   fi
 
@@ -101,14 +101,14 @@ main() {
   if [[ "$use_case" == 'liferay-base' ]]; then
     check_volume_dir "$volume_dir" "$use_case"
     mkdir -p "$volume_dir/my/own/liferaybasedir"
-    volume_option="-v $volume_dir/my/own/liferaybasedir:$LIFERAY_BASE"
+    volume_option="-v $volume_dir/my/own/liferaybasedir:$liferay_base"
     eval "${base_cmd/options/$volume_option}"
   fi
 
   if [[ "$use_case" == 'liferay-init' ]]; then
     check_volume_dir "$volume_dir" "$use_case"
     mkdir -p "$volume_dir/my/own/liferayinitdir"
-    volume_option="-v $volume_dir/my/own/liferayinitdir:$LIFERAY_INIT"
+    volume_option="-v $volume_dir/my/own/liferayinitdir:$liferay_init"
     eval "${base_cmd/options/$volume_option}"
   fi
 
