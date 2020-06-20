@@ -42,6 +42,7 @@ main() {
   version="${new_supported_tag%%/*}"
   variant="$(basename "$new_supported_tag")"
   java_variant="${variant%%-*}"
+  check_not_empty "$java_variant" "$0[java_variant]"
 
   if [[ "$java_variant" != jdk* ]]; then
     echo "Not supported Java variant: $java_variant"
@@ -49,12 +50,8 @@ main() {
   fi
 
   os_variant="${variant#$java_variant-}"
+  check_not_empty "$os_variant" "$0[os_variant]"
   partial_template="Dockerfile-${os_variant}-partial.template"
-
-  if [[ "${os_variant}" == "${java_variant}" ]]; then
-    os_variant=
-    partial_template='Dockerfile-partial.template'
-  fi
 
   printf "%s\n" "version: $version" \
     "variant: $variant" \
@@ -63,7 +60,7 @@ main() {
     "partial_template: $partial_template"
 
   # e.g., openjdk:8-jdk, openjdk:8-jdk-alpine, openjdk:11-jdk
-  base_image="openjdk:${java_variant:3}-${java_variant:0:3}${os_variant:+-$os_variant}"
+  base_image="openjdk:${java_variant:3}-${java_variant:0:3}-${os_variant}"
   echo "base_image: $base_image"
 
   full_version=$(
