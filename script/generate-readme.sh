@@ -46,9 +46,9 @@ main() {
 
   cat "$PWD/readme/template.md" >"$work_dir/README.md"
   replace_field "$work_dir/README.md" 'TAGS' "$tags_content"
-  replace_field "$work_dir/README.md" 'CONTENT' "$(cat "readme/content.md")"
-  replace_field "$work_dir/README.md" 'VARIANT' "$(cat "readme/variant.md")"
-  replace_field "$work_dir/README.md" 'LICENSE' "$(cat "readme/license.md")"
+  replace_field "$work_dir/README.md" 'CONTENT' "$(cat "./readme/content.md")"
+  replace_field "$work_dir/README.md" 'VARIANT' "$(cat "./readme/variant.md")"
+  replace_field "$work_dir/README.md" 'LICENSE' "$(cat "./readme/license.md")"
   replace_field "$work_dir/README.md" 'IMAGE' 'ibaiborodine/liferay-portal-ce'
 
   if [[ "$dry_run" == true ]]; then
