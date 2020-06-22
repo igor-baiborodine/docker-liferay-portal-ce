@@ -1,8 +1,8 @@
 # Image Variants
 
-## `ibaiborodine/liferay-portal-ce:<version>-<jdk>`
+## `ibaiborodine/liferay-portal-ce:<version>-<jdk>-buster`
 
-This is the defacto image which is based on [Debian Linux](https://www.debian.org/)(currently `Buster` release). If you are unsure about what your needs are, you probably want to use this one. It is designed to be used both as a throw away container (mount your source code and start the container to start your app), as well as the base to build other images off of.
+This is the defacto image which is based on [Debian Linux](https://www.debian.org/), currently `Buster` release. If you are unsure about what your needs are, you probably want to use this one. It is designed to be used both as a throw away container (mount your source code and start the container to start your app), as well as the base to build other images off of.
 
 ## `ibaiborodine/liferay-portal-ce:<version>-<jdk>-alpine`
 
