@@ -1,0 +1,11 @@
+RUN addgroup liferay && adduser -D -G liferay liferay
+
+RUN set -ex; \
+    apk add --no-cache \
+    # su tool for easy step-down from root
+    'su-exec>=0.2' \
+    # Tomcat native library using the Apache Portable Runtime
+    tomcat-native \
+    # Font family based on the Bitstream Vera Fonts with a wider range of characters
+    ttf-dejavu \
+    bash

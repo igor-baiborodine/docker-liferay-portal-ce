@@ -1,6 +1,6 @@
 # What is Liferay Portal?
 
-**Liferay Portal** is an open source portal framework for building web applications, websites, and portals. It also offers an integrated CMS and may serve as an enterprise integration platform.  
+**Liferay Portal** is an open-source portal framework for building web applications, websites, and portals. It also offers an integrated CMS and may serve as an enterprise integration platform.  
 
 [https://www.liferay.com/downloads-community](https://www.liferay.com/downloads-community)
 
@@ -20,16 +20,15 @@ $ docker run --name <container name> -d %%IMAGE%%:<tag>
 
 The default Liferay Portal configuration contains embedded Hypersonic database and Elasticsearch instances. Please note that this setup is not suitable for production.
 
-You can test it by visiting `http://container-ip:8080` in a browser. To get the container IP address, you can execute the following command:
+You can test it at `http://container-ip:8080` in a browser. To get the container IP address, execute the following command:
 ```console
-$ docker exec <container name> -it ifconfig
+$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container name>
 ```
-... or, if you need access outside the host, on port 80:
-
+... or via the host machine on port 80:
 ```console
 $ docker run --name <container name> -p 80:8080 -d %%IMAGE%%:<tag>
 ```
-You can then go to `http://localhost:80` or `http://host-ip:80` in a browser.
+Then test it at `http://localhost:80` or `http://host-ip:80` in a browser.
 
 If you want to start a `liferay-instance` in debug mode, execute the following:
 ```console
@@ -55,9 +54,9 @@ services:
       - "80:8080"
 ```
 
-Run `docker-compose -f docker-compose.yml up`, wait for it to initialize completely, and visit `http://localhost:80` or `http://host-ip:80` (as appropriate).
+Run `docker-compose -f docker-compose.yml up`, wait for it to initialize completely, and visit at `http://localhost:80` or `http://host-ip:80` (as appropriate).
 
-Other `docker-compose.yml` examples: [Liferay/MySQL](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql/docker-compose.yml), [Liferay/MySQL/ElasticSearch](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql-elasticsearch/docker-compose.yml)
+Additional `docker-compose` examples: [Liferay/MySQL](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql/docker-compose.yml), [Liferay/MySQL/ElasticSearch](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/compose/liferay-mysql-elasticsearch/docker-compose.yml)
 
 ## Check the Tomcat version information
 ```console
@@ -65,18 +64,18 @@ $ docker run --rm -it %%IMAGE%%:<tag> version.sh | grep 'Server version'
 ``` 
 
 ## Container shell access and viewing Liferay Portal logs
-The `docker exec` command allows you to run commands inside a Docker container. The following command line will give you a bash shell inside your `liferay-portal` container:
+The `docker exec` command allows you to run commands inside a Docker container. The following command will give you a bash shell inside your `liferay-portal` container:
 ```console
 $ docker exec -it <container name> bash
 ```
 
-The Liferay Portal log is available through Docker's container log:
+The Liferay Portal log is available via the `docker logs` command:
 ```console
 $ docker logs -f <container name>
 ```
 
 ## Configure Liferay Portal via environment variables
-You can override [portal.properties](https://github.com/liferay/liferay-portal/blob/master/portal-impl/src/portal.properties) by specifying corresponding environment variables, e.g.:
+You can override [portal.properties](https://github.com/liferay/liferay-portal/blob/master/portal-impl/src/portal.properties) by specifying corresponding environment variables, for example:
 ```properties
 #
 # Set this property to true if the Setup Wizard should be displayed the
@@ -86,15 +85,15 @@ You can override [portal.properties](https://github.com/liferay/liferay-portal/b
 #
 setup.wizard.enabled=true
 ```
-To override `setup.wizard.enabled` property, set `LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED` environment variable to `false` when starting a new container: 
+To override the `setup.wizard.enabled` property, set the `LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED` environment variable to `false` when running a new container: 
 ```console
 $ docker run --name <container name> -p 80:8080 -it \ 
     --env LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED=false %%IMAGE%%:<tag>
 ```
-Also, the environment variables can be set via docker-compose.yml (see example above) or by extending this image (see example below). 
+Also, the environment variables can be set via the `docker-compose.yml` (see example above) or by extending this image (see example below). 
 
 ## Health check
-This image does not contain an explicit health check. To add a health check, you can start your `liferay-portal` instance with `--health-*` options:
+This image does not contain an explicit health check. To add a health check, you can run your `liferay-portal` instance with the `--health-*` options:
 ```console
 $ docker run --name <container name> -d \ 
     --health-cmd='curl -fsS "http://localhost:8080/c/portal/layout" || exit 1' \
@@ -103,7 +102,7 @@ $ docker run --name <container name> -d \
     --health-retries=3 \
     %%IMAGE%%:<tag> 
 ```
-... or by extending this image. For a more detailed explanation about why this image does not come with a default `HEALTHCHECK` defined, and for suggestions to implement your own health/liveness/readiness checks, you can read [here](https://github.com/docker-library/faq#healthcheck).
+... or by extending this image. For a more detailed explanation about why this image does not come with a default `HEALTHCHECK` defined, and for suggestions on how to implement your own health/liveness/readiness checks, read [here](https://github.com/docker-library/faq#healthcheck).
 
 ## Deploy modules to a running `liferay-portal` instance
 This image exposes an optional `VOLUME` to allow deploying modules to a running container. To enable this option, you will need to:
@@ -115,7 +114,7 @@ $ docker run --name <container name> -v /my/own/deploydir:/opt/liferay/deploy -d
 The `-v /my/own/deploydir:/opt/liferay/deploy` part of the command mounts the `/my/own/deploydir` directory from the underlying host system as `/opt/liferay/deploy` inside the container to scan for layout templates, portlets, and themes to auto-deploy.
 
 ## Where to store documents and media files
-By default, Liferay Portal uses a document library store option called Simple File Store to store documents and media files on a file system (local or mounted). The store's default root folder is `LIFERAY_HOME/data/document_library`.
+By default, Liferay Portal uses a document library store option called `Simple File Store` to store documents and media files on a file system (local or mounted). The store's default root folder is `LIFERAY_HOME/data/document_library`.
 There are several ways to store data used by applications that run in Docker containers. One of the options is to create a data directory on the host system (outside the container) and mount this to a directory visible from inside the container. This places the document and media files in a known location on the host system and makes it easy for tools and applications on the host system to access the files. The downside is that the user needs to make sure that the directory exists and that directory permissions and other security mechanisms on the host system are set up correctly.
 
 You will need to:
@@ -132,7 +131,7 @@ Do not use the default in-memory database(H2) when storing document and media fi
 # How to Extend This Image
 
 ## Environment variables
-If you would like to override the default configuration, i.e. portal.properties, you can do that by specifying corresponding environment variables in an image derived from this one:
+If you would like to override the default configuration, i.e. portal properties, you can do that by specifying corresponding environment variables in an image derived from this one:
 ```dockerfile
 FROM %%IMAGE%%:<tag>
 
