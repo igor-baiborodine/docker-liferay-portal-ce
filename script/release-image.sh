@@ -32,7 +32,7 @@ main() {
   done
   echo "new_supported_tag:$new_supported_tag, dry_run:$dry_run"
 
-  check_not_empty "$new_supported_tag" "$0[new_supported_tag]"
+  check_not_empty "$new_supported_tag" "$0:new_supported_tag"
 
   if [[ -d "$new_supported_tag" && "$dry_run" == false ]]; then
     echo "Already supported tag: $new_supported_tag"
@@ -42,7 +42,7 @@ main() {
   version="${new_supported_tag%%/*}"
   variant="$(basename "$new_supported_tag")"
   java_variant="${variant%%-*}"
-  check_not_empty "$java_variant" "$0[java_variant]"
+  check_not_empty "$java_variant" "$0:java_variant"
 
   if [[ "$java_variant" != jdk* ]]; then
     echo "Not supported Java variant: $java_variant"
@@ -50,7 +50,10 @@ main() {
   fi
 
   os_variant="${variant#$java_variant-}"
-  check_not_empty "$os_variant" "$0[os_variant]"
+  if [[ "${os_variant}" == "${java_variant}" ]]; then
+    os_variant=
+  fi
+  check_not_empty "$os_variant" "$0:os_variant"
   partial_template="Dockerfile-${os_variant}-partial.template"
 
   printf "%s\n" "version: $version" \

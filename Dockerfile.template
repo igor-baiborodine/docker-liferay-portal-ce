@@ -46,13 +46,13 @@ RUN set -eux; \
     mkdir -p "$LIFERAY_BASE" "$LIFERAY_INIT"; \
     chown -R liferay:liferay "$LIFERAY_BASE" "$LIFERAY_INIT"
 
-RUN set -ex; \
+RUN set -e; \
     native_lines="$(catalina.sh configtest 2>&1)"; \
     native_lines="$(echo "$native_lines" | grep 'Apache Tomcat Native')"; \
     native_lines="$(echo "$native_lines" | sort -u)"; \
     if ! echo "$native_lines" | grep 'INFO: Loaded APR based Apache Tomcat Native library' >&2; then \
-      echo >&2 "$native_lines"; \
-      exit 1; \
+        echo >&2 "$native_lines"; \
+        exit 1; \
     fi
 
 VOLUME \

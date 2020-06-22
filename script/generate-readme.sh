@@ -28,8 +28,8 @@ main() {
 
   echo "supported_tag: $supported_tag, commit_hash: $commit_hash, dry_run: $dry_run"
 
-  check_not_empty "$supported_tag" "$0[supported_tag]"
-  check_not_empty "$commit_hash" "$0[commit_hash]"
+  check_not_empty "$supported_tag" "$0:supported_tag"
+  check_not_empty "$commit_hash" "$0:commit_hash"
 
   sed -i 's,^\b'"$supported_tag"'\b$,'"$supported_tag:$commit_hash"',' "$work_dir/supported-tags"
   tags_content=
