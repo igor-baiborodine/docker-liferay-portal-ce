@@ -68,7 +68,7 @@ main() {
   fi
 
   if [[ "$use_case" == 'extended' ]]; then
-    dockerfile=$(cat test/my/own/extended-dockerfile/Dockerfile)
+    dockerfile=$(cat volume/my/own/extended-dockerfile/Dockerfile)
     dockerfile=${dockerfile/tag/$tag}
     echo "$dockerfile" | docker build -t test-extended-image -
     base_cmd=${base_cmd%options*}
