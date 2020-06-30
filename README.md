@@ -5,6 +5,8 @@
 
 # [Docker Hub Repository](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
 
+### [Release Image Manual](/readme/release-image-manual.md)
+
 # Supported tags and respective `Dockerfile` links
 
 -  [`7.3.2-ga3-jdk11-buster, latest` (*7.3.2-ga3/jdk11-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/b4b5f337ba8cd530bbb0f5e3c98800fcbd6a9ffd/7.3.2-ga3/jdk11-buster/Dockerfile)
