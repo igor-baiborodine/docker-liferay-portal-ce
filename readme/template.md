@@ -5,6 +5,8 @@
 
 # [Docker Hub Repository](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
 
+### [Release Image Manual](/readme/release-image-manual.md)
+
 # Supported tags and respective `Dockerfile` links
 
 %%TAGS%%
