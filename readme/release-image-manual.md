@@ -68,10 +68,10 @@ dr-7.3.2-ga3-jdk8-buster         latest                   99c737b17e72        9 
 dr-7.3.2-ga3-jdk8-alpine         latest                   62f046fa8a17        9 days ago          954MB
 ```
 
-Run a container with the corresponding use case for each locally built image and test Liferay Portal:
+Run a container with the corresponding use case for each locally built image and test a Liferay Portal instance at `http://localhost:80`:
 ```shell script
 $ script/run-container.sh -t dr-7.3.2-ga3-jdk8-alpine -u base
-$ script/run-container.sh -t dr-7.3.2-ga3-jdk11-buster -u tomcat-version
+$ script/run-container.sh -t dr-7.3.2-ga3-jdk8-buster -u tomcat-version
 $ script/run-container.sh -t dr-7.3.2-ga3-jdk11-buster -u deploy -v ~/temp/liferay/docker/test
 ```
 
