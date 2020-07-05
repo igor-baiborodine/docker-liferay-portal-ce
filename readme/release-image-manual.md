@@ -55,8 +55,8 @@ dry-run
 Build images for each corresponding Dockerfile:
 ```shell script
 docker build --rm -t dr-7.3.2-ga3-jdk8-alpine dry-run/7.3.2-ga3/jdk8-alpine
-docker build --rm -t dr-7.3.2-ga3-jdk8-alpine dry-run/7.3.2-ga3/jdk8-buster
-docker build --rm -t dr-7.3.2-ga3-jdk8-alpine dry-run/7.3.2-ga3/jdk11-buster
+docker build --rm -t dr-7.3.2-ga3-jdk8-buster dry-run/7.3.2-ga3/jdk8-buster
+docker build --rm -t dr-7.3.2-ga3-jdk11-buster dry-run/7.3.2-ga3/jdk11-buster
 ```
 
 List images:
