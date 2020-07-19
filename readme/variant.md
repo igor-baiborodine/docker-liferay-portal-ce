@@ -1,10 +1,10 @@
 # Image Variants
 
-## `ibaiborodine/liferay-portal-ce:<version>-<jdk>-buster`
+## `%%IMAGE%%:<version>-<jdk>-buster`
 
 This is the defacto image which is based on [Debian Linux](https://www.debian.org/), currently `Buster` release. If you are unsure about what your needs are, you probably want to use this one. It is designed to be used both as a throw away container (mount your source code and start the container to start your app), as well as the base to build other images off of.
 
-## `ibaiborodine/liferay-portal-ce:<version>-<jdk>-alpine`
+## `%%IMAGE%%:<version>-<jdk>-alpine`
 
 This image is based on the popular [Alpine Linux project](http://alpinelinux.org), available in [the `alpine` official image](https://hub.docker.com/_/alpine). Alpine Linux is much smaller than most distribution base images (~5MB), and thus leads to much slimmer images in general.
 
