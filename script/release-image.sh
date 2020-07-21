@@ -4,7 +4,7 @@ set -eo pipefail
 source $(dirname "$0")/helper.sh
 
 usage() {
-  echo "Usage: $0 -t <tag> [-p <path>] [-d]" 1>&2
+  echo "Usage: $0 -t <tag> [-d]" 1>&2
   exit 1
 }
 
@@ -12,14 +12,10 @@ main() {
   dry_run=false
   work_dir="."
 
-  while getopts "t:p:d" opt; do
+  while getopts "t:d" opt; do
     case $opt in
     t)
       new_supported_tag="$OPTARG"
-      ;;
-    p)
-      # path to a previously downloaded Liferay bundle
-      liferay_local_path="$OPTARG"
       ;;
     d)
       dry_run=true
@@ -83,11 +79,6 @@ main() {
   echo "Adding Dockerfile for $version/$variant..."
   release_dir="$work_dir/$version/$variant"
   mkdir -p "$release_dir"
-
-  if [[ -n "$liferay_local_path" ]]; then
-    download_url="$liferay_local_path"
-    echo "download_url: $download_url"
-  fi
 
   cat "Dockerfile.template" >"$release_dir/Dockerfile"
   replace_field "$release_dir/Dockerfile" 'PARTIAL_TEMPLATE' "$(cat "$partial_template")"
