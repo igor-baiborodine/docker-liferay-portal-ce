@@ -117,10 +117,12 @@ main() {
       echo "Not found in supported-tags: release[$version]"
       echo "$new_supported_tag" >"$work_dir/supported-tags"
 
-      for release_dir in $(ls -d [7-9]*/); do
-        if [[ ${new_supported_tag} != "$release_dir"* ]]; then
-          echo "Removing directory: release[$release_dir]..."
-          rm -rf "$release_dir"
+      for dir in "$work_dir"/* ; do
+        if [[ "$dir" =~ ./[7-9]. ]]; then
+          if [[ ${new_supported_tag} != "$(basename "$dir")"* ]]; then
+            echo "Removing directory: $dir..."
+            rm -rf "$dir"
+          fi
         fi
       done
     fi
