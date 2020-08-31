@@ -9,7 +9,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
--  [`7.3.4-ga5-jdk11-buster` (*7.3.4-ga5/jdk11-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/83abef4b3d03f0a099001866ef80a67842e4e2c4/7.3.4-ga5/jdk11-buster/Dockerfile)
+-  [`7.3.4-ga5-jdk11-buster, latest` (*7.3.4-ga5/jdk11-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/83abef4b3d03f0a099001866ef80a67842e4e2c4/7.3.4-ga5/jdk11-buster/Dockerfile)
 -  [`7.3.4-ga5-jdk8-buster` (*7.3.4-ga5/jdk8-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/48fd6e98604277d5ce716de47e074cc9ebd1e244/7.3.4-ga5/jdk8-buster/Dockerfile)
 -  [`7.3.4-ga5-jdk8-alpine` (*7.3.4-ga5/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/6887f364cdc80ce4c4503bd5ca984cce0eb89e4b/7.3.4-ga5/jdk8-alpine/Dockerfile)
 
