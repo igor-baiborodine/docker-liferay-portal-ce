@@ -29,14 +29,13 @@ LABEL \
     org.label-schema.vcs-url="https://github.com/igor-baiborodine/docker-liferay-portal-ce" \
     org.label-schema.usage="https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/README.md"
 
-%%PARTIAL_TEMPLATE%%
-
 ENV LIFERAY_VERSION %%LIFERAY_VERSION%%
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
 ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
+%%PARTIAL_TEMPLATE%%
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 
@@ -50,7 +49,7 @@ RUN set -e; \
     native_lines="$(catalina.sh configtest 2>&1)"; \
     native_lines="$(echo "$native_lines" | grep 'Apache Tomcat Native')"; \
     native_lines="$(echo "$native_lines" | sort -u)"; \
-    if ! echo "$native_lines" | grep 'INFO: Loaded APR based Apache Tomcat Native library' >&2; then \
+    if ! echo "$native_lines" | grep "INFO: Loaded Apache Tomcat Native library" >&2; then \
         echo >&2 "$native_lines"; \
         exit 1; \
     fi

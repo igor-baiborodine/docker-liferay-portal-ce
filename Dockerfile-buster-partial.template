@@ -1,3 +1,5 @@
+ENV TOMCAT_NATIVE_VERSION 1.2.21
+
 RUN groupadd liferay && useradd -g liferay liferay
 
 RUN set -ex; \
@@ -9,6 +11,6 @@ RUN set -ex; \
         ttf-dejavu; \
     rm -rf /var/lib/apt/lists/*; \
     gosu nobody true; \
-    wget -O libtcnative-1.deb 'http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_1.2.21-1_amd64.deb' -q --show-progress --progress=bar:force 2>&1; \
+    wget -O libtcnative-1.deb "http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_${TOMCAT_NATIVE_VERSION}-1_amd64.deb" -q --show-progress --progress=bar:force 2>&1; \
     dpkg -i libtcnative-1.deb; \
     rm libtcnative-1.deb
