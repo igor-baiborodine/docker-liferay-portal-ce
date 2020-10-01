@@ -94,7 +94,7 @@ Pull images from Docker Hub:
 ```shell script
 $ docker pull ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk8-alpine
 $ docker pull ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk8-buster
-$ docker pull ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk11-alpine
+$ docker pull ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk11-buster
 ```
 
 Run a container with the corresponding use case for each image pulled from Docker Hub and test Liferay Portal:
