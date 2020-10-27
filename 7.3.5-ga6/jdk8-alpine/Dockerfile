@@ -7,8 +7,8 @@
 ################################################################################
 FROM openjdk:8-jdk-alpine AS builder
 
-ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.3.5-ga6/liferay-ce-portal-tomcat-7.3.5-ga6-20200924034643403.tar.gz
-ENV LIFERAY_DOWNLOAD_MD5 417010212c1208c193843c4eb5a0fb77
+ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.3.5-ga6/liferay-ce-portal-tomcat-7.3.5-ga6-20200930172312275.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5 107aa96e14fc9fe09886ad76212ec384
 
 ADD "$LIFERAY_DOWNLOAD_URL" /tmp/liferay-bundle.tar.gz
 
