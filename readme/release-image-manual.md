@@ -3,6 +3,8 @@
 Docker command aliases:
 ```shell script
 ## Docker
+alias dsp='docker system prune'
+
 # Image
 alias dip='docker image prune'
 alias dils='docker image ls'
