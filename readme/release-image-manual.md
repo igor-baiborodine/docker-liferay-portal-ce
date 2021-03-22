@@ -30,16 +30,16 @@ cd docker-liferay-portal-ce
 
 Release images in dry-run mode:
 ```shell script
-script/dry-run.sh -t 7.3.5-ga6/jdk8-alpine
-script/dry-run.sh -t 7.3.5-ga6/jdk8-buster
-script/dry-run.sh -t 7.3.5-ga6/jdk11-buster
+script/dry-run.sh -t 7.3.6-ga7/jdk8-alpine
+script/dry-run.sh -t 7.3.6-ga7/jdk8-buster
+script/dry-run.sh -t 7.3.6-ga7/jdk11-buster
 ```
 
 The `dry-run` folder should look like below:
 ```shell script
 $ tree -La 3 dry-run
 dry-run
-├── 7.3.5-ga6
+├── 7.3.6-ga7
 │   ├── jdk11-buster
 │   │   ├── docker-entrypoint.sh
 │   │   └── Dockerfile
@@ -56,25 +56,25 @@ dry-run
 
 Build images for each corresponding Dockerfile:
 ```shell script
-docker build --rm -t dr-7.3.5-ga6-jdk8-alpine dry-run/7.3.5-ga6/jdk8-alpine
-docker build --rm -t dr-7.3.5-ga6-jdk8-buster dry-run/7.3.5-ga6/jdk8-buster
-docker build --rm -t dr-7.3.5-ga6-jdk11-buster dry-run/7.3.5-ga6/jdk11-buster
+docker build --rm -t dr-7.3.6-ga7-jdk8-alpine dry-run/7.3.6-ga7/jdk8-alpine
+docker build --rm -t dr-7.3.6-ga7-jdk8-buster dry-run/7.3.6-ga7/jdk8-buster
+docker build --rm -t dr-7.3.6-ga7-jdk11-buster dry-run/7.3.6-ga7/jdk11-buster
 ```
 
 List images:
 ```shell script
 $ dils
 REPOSITORY                       TAG                      IMAGE ID            CREATED             SIZE
-dr-7.3.5-ga6-jdk11-buster        latest                   2c6570687d76        9 days ago          1.46GB
-dr-7.3.5-ga6-jdk8-buster         latest                   99c737b17e72        9 days ago          1.35GB
-dr-7.3.5-ga6-jdk8-alpine         latest                   62f046fa8a17        9 days ago          954MB
+dr-7.3.6-ga7-jdk11-buster        latest                   2c6570687d76        9 days ago          1.46GB
+dr-7.3.6-ga7-jdk8-buster         latest                   99c737b17e72        9 days ago          1.35GB
+dr-7.3.6-ga7-jdk8-alpine         latest                   62f046fa8a17        9 days ago          954MB
 ```
 
 Run a container with the corresponding use case for each locally built image and test a Liferay Portal instance at `http://localhost:80`:
 ```shell script
-$ script/run-container.sh -t dr-7.3.5-ga6-jdk8-alpine -u base
-$ script/run-container.sh -t dr-7.3.5-ga6-jdk8-buster -u tomcat-version
-$ script/run-container.sh -t dr-7.3.5-ga6-jdk11-buster -u deploy -v ~/temp/liferay/docker/test
+$ script/run-container.sh -t dr-7.3.6-ga7-jdk8-alpine -u base
+$ script/run-container.sh -t dr-7.3.6-ga7-jdk8-buster -u tomcat-version
+$ script/run-container.sh -t dr-7.3.6-ga7-jdk11-buster -u deploy -v ~/temp/liferay/docker/test
 ```
 
 Stop and remove all containers:
@@ -84,26 +84,26 @@ $ dcsa && dcra
 
 Release images and publish them to Docker Hub:
 ```shell script
-$ script/release-image.sh -t 7.3.5-ga6/jdk8-alpine
+$ script/release-image.sh -t 7.3.6-ga7/jdk8-alpine
 $ git pull
-$ script/release-image.sh -t 7.3.5-ga6/jdk8-buster
+$ script/release-image.sh -t 7.3.6-ga7/jdk8-buster
 $ git pull
-$ script/release-image.sh -t 7.3.5-ga6/jdk11-buster
+$ script/release-image.sh -t 7.3.6-ga7/jdk11-buster
 $ git pull
 ```
 
 Pull images from Docker Hub:
 ```shell script
-$ docker pull ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk8-alpine
-$ docker pull ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk8-buster
-$ docker pull ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk11-buster
+$ docker pull ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-alpine
+$ docker pull ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-buster
+$ docker pull ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk11-buster
 ```
 
 Run a container with the corresponding use case for each image pulled from Docker Hub and test Liferay Portal:
 ```shell script
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk8-alpine -u base
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk8-buster -u extended
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.5-ga6-jdk11-buster -u deploy -v ~/temp/liferay/docker/test
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-alpine -u base
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-buster -u extended
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk11-buster -u deploy -v ~/temp/liferay/docker/test
 ```
 
 Stop and remove all containers:
