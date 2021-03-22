@@ -1,4 +1,4 @@
-ENV TOMCAT_NATIVE_VERSION 1.2.21
+ENV TOMCAT_NATIVE_VERSION 1.2.26
 
 RUN groupadd liferay && useradd -g liferay liferay
 
