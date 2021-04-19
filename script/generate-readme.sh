@@ -53,6 +53,10 @@ main() {
 
   if [[ "$dry_run" == true ]]; then
     echo "README generation dry run completed for tag [$supported_tag]"
+  else
+    git add ./README.md ./supported-tags
+    git commit -m "Add new supported tag [$supported_tag]"
+    git push
   fi
 }
 

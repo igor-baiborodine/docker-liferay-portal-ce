@@ -96,10 +96,6 @@ main() {
   replace_field "$release_dir/docker-entrypoint.sh" 'SU_TOOL' "$su_tool"
   chmod +x "$release_dir/docker-entrypoint.sh"
 
-  travis="$(awk '/matrix:/{print;getline;$0="    - VERSION='"$version"' VARIANT='"$variant"'"}1' ./.travis.yml)"
-  echo "Modifying .travis.yml with new VERSION/VARIANT[$version/$variant]..."
-  echo "$travis" >"$work_dir/.travis.yml"
-
   if [[ -f "$work_dir/supported-tags" ]]; then
     if grep -q "$version" "$work_dir/supported-tags"; then
       echo "Found in supported-tags: release[$version]"
