@@ -1,0 +1,51 @@
+name: Perform Release
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: Release Version
+        required: true
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/liferay-portal-ce
+  IMAGE_TAG:  ${{ github.event.inputs.releaseVersion }}
+
+jobs:
+  release:
+    name: Dockerfile & Docker Image & README
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v2
+
+      - name: Configure Git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Release Dockerfile
+        run: |
+          ./script/release-dockerfile.sh -t "$IMAGE_TAG"
+
+      - name: Check out docker-library/official-images
+        run: |
+          git clone https://github.com/docker-library/official-images.git ../official-images
+
+      - name: Build image
+        run: |
+          docker build -t $IMAGE_NAME:"${IMAGE_TAG//\//-}" ./"$IMAGE_TAG"
+          ../official-images/test/run.sh $IMAGE_NAME:"${IMAGE_TAG//\//-}"
+          docker tag $IMAGE_NAME:"${IMAGE_TAG//\//-}" $IMAGE_NAME:latest
+
+      - name: Log into registry
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Push image
+        run: |
+          docker push $IMAGE_NAME:"${IMAGE_TAG//\//-}"
+          docker push $IMAGE_NAME:latest
+
+      - name: Generate README
+        run: |
+          ./script/generate-readme.sh -t "$IMAGE_TAG" -c "$(git rev-parse HEAD)"
