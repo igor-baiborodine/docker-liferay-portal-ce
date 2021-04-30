@@ -20,7 +20,7 @@ main() {
   done
   echo "Starting dry run for tag: $tag ..."
 
-  $(dirname "$0")/release-image.sh -t "$tag" -d
+  $(dirname "$0")/release-dockerfile.sh -t "$tag" -d
   commit_hash=$(uuidgen)
   $(dirname "$0")/generate-readme.sh -t "$tag" -c "$commit_hash" -d
 }
