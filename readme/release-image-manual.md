@@ -1,7 +1,7 @@
-### How to Release an Image 
+## How to Release an Image 
 
-Docker command aliases:
-```shell script
+### Docker command aliases:
+```shell
 ## Docker
 alias dsp='docker system prune'
 
@@ -22,24 +22,25 @@ alias dcsa='docker container stop $(docker ps -a -q)'
 alias dcra='docker container rm $(docker ps -a -q)'
 ```
 
+### Dry Run
 Clone the project to your local dev:
-```shell script
+```shell
 git clone https://github.com/igor-baiborodine/docker-liferay-portal-ce.git
 cd docker-liferay-portal-ce
 ```
 
 Release images in dry-run mode:
-```shell script
-script/dry-run.sh -t 7.3.6-ga7/jdk8-alpine
-script/dry-run.sh -t 7.3.6-ga7/jdk8-buster
-script/dry-run.sh -t 7.3.6-ga7/jdk11-buster
+```shell
+$ script/dry-run.sh -t 7.4.0-ga1/jdk8-alpine
+$ script/dry-run.sh -t 7.4.0-ga1/jdk8-buster
+$ script/dry-run.sh -t 7.4.0-ga1/jdk11-buster
 ```
 
 The `dry-run` folder should look like below:
-```shell script
+```shell
 $ tree -La 3 dry-run
 dry-run
-├── 7.3.6-ga7
+├── 7.4.0-ga1
 │   ├── jdk11-buster
 │   │   ├── docker-entrypoint.sh
 │   │   └── Dockerfile
@@ -51,62 +52,69 @@ dry-run
 │       └── Dockerfile
 ├── README.md
 ├── supported-tags
-└── .travis.yml
 ```
 
 Build images for each corresponding Dockerfile:
-```shell script
-docker build --rm -t dr-7.3.6-ga7-jdk8-alpine dry-run/7.3.6-ga7/jdk8-alpine
-docker build --rm -t dr-7.3.6-ga7-jdk8-buster dry-run/7.3.6-ga7/jdk8-buster
-docker build --rm -t dr-7.3.6-ga7-jdk11-buster dry-run/7.3.6-ga7/jdk11-buster
+```shell
+$ docker build --rm -t dr-7.4.0-ga1-jdk8-alpine dry-run/7.4.0-ga1/jdk8-alpine
+$ docker build --rm -t dr-7.4.0-ga1-jdk8-buster dry-run/7.4.0-ga1/jdk8-buster
+$ docker build --rm -t dr-7.4.0-ga1-jdk11-buster dry-run/7.4.0-ga1/jdk11-buster
 ```
 
 List images:
-```shell script
+```shell
 $ dils
 REPOSITORY                       TAG                      IMAGE ID            CREATED             SIZE
-dr-7.3.6-ga7-jdk11-buster        latest                   2c6570687d76        9 days ago          1.46GB
-dr-7.3.6-ga7-jdk8-buster         latest                   99c737b17e72        9 days ago          1.35GB
-dr-7.3.6-ga7-jdk8-alpine         latest                   62f046fa8a17        9 days ago          954MB
+dr-7.4.0-ga1-jdk11-buster        latest                   2c6570687d76        9 days ago          1.46GB
+dr-7.4.0-ga1-jdk8-buster         latest                   99c737b17e72        9 days ago          1.35GB
+dr-7.4.0-ga1-jdk8-alpine         latest                   62f046fa8a17        9 days ago          954MB
 ```
 
 Run a container with the corresponding use case for each locally built image and test a Liferay Portal instance at `http://localhost:80`:
-```shell script
-$ script/run-container.sh -t dr-7.3.6-ga7-jdk8-alpine -u base
-$ script/run-container.sh -t dr-7.3.6-ga7-jdk8-buster -u tomcat-version
-$ script/run-container.sh -t dr-7.3.6-ga7-jdk11-buster -u deploy -v ~/temp/liferay/docker/test
+```shell
+$ script/run-container.sh -t dr-7.4.0-ga1-jdk8-alpine -u base
+$ script/run-container.sh -t dr-7.4.0-ga1-jdk8-buster -u base
+$ script/run-container.sh -t dr-7.4.0-ga1-jdk11-buster -u base
+```
+
+Verify logs:
+```shell
+$ docker logs -f test-base
 ```
 
 Stop and remove all containers:
-```shell script
+```shell
 $ dcsa && dcra
 ```
 
-Release images and publish them to Docker Hub:
-```shell script
-$ script/release-image.sh -t 7.3.6-ga7/jdk8-alpine
-$ git pull
-$ script/release-image.sh -t 7.3.6-ga7/jdk8-buster
-$ git pull
-$ script/release-image.sh -t 7.3.6-ga7/jdk11-buster
-$ git pull
-```
+### Release Images
+
+Release images and publish them to Docker Hub; repeat for each tag variant: `7.4.0-ga1/jdk8-alpine`, `7.4.0-ga1/jdk8-buster`, and `7.4.0-ga1/jdk11-buster` 
+
+* In GitHub, select the `Perform Release` workflow in the `Actions` tab.
+* Click on the `Run workflow` and enter the tag variant in the `Release Version` field.
+* Click on the `Run workflow` below the `Release Version` field and wait until the execution is completed.
 
 Pull images from Docker Hub:
-```shell script
-$ docker pull ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-alpine
-$ docker pull ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-buster
-$ docker pull ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk11-buster
+```shell
+$ docker pull ibaiborodine/liferay-portal-ce:7.4.0-ga1-jdk8-alpine
+$ docker pull ibaiborodine/liferay-portal-ce:7.4.0-ga1-jdk8-buster
+$ docker pull ibaiborodine/liferay-portal-ce:7.4.0-ga1-jdk11-buster
 ```
 
 Run a container with the corresponding use case for each image pulled from Docker Hub and test Liferay Portal:
-```shell script
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-alpine -u base
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk8-buster -u extended
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.3.6-ga7-jdk11-buster -u deploy -v ~/temp/liferay/docker/test
+```shell
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.0-ga1-jdk8-alpine -u extended
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.0-ga1-jdk8-buster -u extended
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.0-ga1-jdk11-buster -u extended
+```
+
+Verify logs:
+```shell
+$ docker logs -f test-extended
 ```
 
 Stop and remove all containers:
-```shell script
+```shell
 $ dcsa && dcra
 ```
