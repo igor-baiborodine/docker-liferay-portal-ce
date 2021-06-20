@@ -5,10 +5,10 @@
 #
 # Build stage 0: builder
 ################################################################################
-FROM openjdk:11-jdk-buster AS builder
+FROM openjdk:8-jdk-alpine AS builder
 
-ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.4.0-ga1/liferay-ce-portal-tomcat-7.4.0-ga1-20210419204607406.tar.gz
-ENV LIFERAY_DOWNLOAD_MD5 a62438dc8504b1c435f2d20b82f7b3e3
+ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.4.1-ga2/liferay-ce-portal-tomcat-7.4.1-ga2-20210609223456272.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5 d77f2ccd5dc8f4d2ed2d6ef33d1efe83
 
 ADD "$LIFERAY_DOWNLOAD_URL" /tmp/liferay-bundle.tar.gz
 
@@ -20,7 +20,7 @@ RUN set -eux; \
 ################################################################################
 # Build stage 1: the actual liferay-portal-ce image
 ################################################################################
-FROM openjdk:11-jdk-buster
+FROM openjdk:8-jdk-alpine
 
 LABEL \
     maintainer="Igor Baiborodine <igor@kiroule.com>" \
@@ -29,7 +29,7 @@ LABEL \
     org.label-schema.vcs-url="https://github.com/igor-baiborodine/docker-liferay-portal-ce" \
     org.label-schema.usage="https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/README.md"
 
-ENV LIFERAY_VERSION 7.4.0-ga1
+ENV LIFERAY_VERSION 7.4.1-ga2
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
@@ -37,20 +37,18 @@ ENV PATH ${LIFERAY_HOME}/tomcat/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
 ENV TOMCAT_NATIVE_VERSION 1.2.26
 
-RUN groupadd liferay && useradd -g liferay liferay
+RUN addgroup liferay && adduser -D -G liferay liferay
 
 RUN set -ex; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-        # su tool for easy step-down from root
-        gosu \
-        # Font family based on the Bitstream Vera Fonts with a wider range of characters
-        ttf-dejavu; \
-    rm -rf /var/lib/apt/lists/*; \
-    gosu nobody true; \
-    wget -O libtcnative-1.deb "http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_${TOMCAT_NATIVE_VERSION}-1_amd64.deb" -q --show-progress --progress=bar:force 2>&1; \
-    dpkg -i libtcnative-1.deb; \
-    rm libtcnative-1.deb
+    apk add --no-cache \
+    # su tool for easy step-down from root
+    'su-exec>=0.2' \
+    # Font family based on the Bitstream Vera Fonts with a wider range of characters
+    ttf-dejavu \
+    bash; \
+    # Tomcat native library using the Apache Portable Runtime
+    wget http://dl-cdn.alpinelinux.org/alpine/v3.12/community/x86_64/tomcat-native-${TOMCAT_NATIVE_VERSION}-r0.apk; \
+    apk add --allow-untrusted tomcat-native-${TOMCAT_NATIVE_VERSION}-r0.apk
 
 COPY --from=builder --chown=liferay:liferay /tmp/liferay-bundle ${LIFERAY_HOME}
 
