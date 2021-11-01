@@ -1,4 +1,4 @@
-# docker-liferay-portal-ce [![Build Status](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce.svg?branch=master)](https://travis-ci.org/igor-baiborodine/docker-liferay-portal-ce)
+# docker-liferay-portal-ce 
 
 ### Developed with Pleasure!
 ![IntelliJ IDEA Logo](https://www.kiroule.com/img/content/page/projects/intellij-idea-logo.png)
