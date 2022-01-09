@@ -1,4 +1,4 @@
-ENV TOMCAT_NATIVE_VERSION 1.2.26
+ENV TOMCAT_NATIVE_VERSION 1.2.31
 
 RUN groupadd liferay && useradd -g liferay liferay
 
@@ -8,7 +8,7 @@ RUN set -ex; \
         # su tool for easy step-down from root
         gosu \
         # Font family based on the Bitstream Vera Fonts with a wider range of characters
-        ttf-dejavu; \
+        fonts-dejavu; \
     rm -rf /var/lib/apt/lists/*; \
     gosu nobody true; \
     wget -O libtcnative-1.deb "http://ftp.us.debian.org/debian/pool/main/t/tomcat-native/libtcnative-1_${TOMCAT_NATIVE_VERSION}-1_amd64.deb" -q --show-progress --progress=bar:force 2>&1; \

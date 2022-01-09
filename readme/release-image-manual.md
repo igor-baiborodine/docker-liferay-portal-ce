@@ -32,8 +32,8 @@ cd docker-liferay-portal-ce
 Release images in dry-run mode:
 ```shell
 $ script/dry-run.sh -t 7.4.3.6-ga6/jdk8-alpine
-$ script/dry-run.sh -t 7.4.3.6-ga6/jdk8-buster
-$ script/dry-run.sh -t 7.4.3.6-ga6/jdk11-buster
+$ script/dry-run.sh -t 7.4.3.6-ga6/jdk8-bullseye
+$ script/dry-run.sh -t 7.4.3.6-ga6/jdk11-bullseye
 ```
 
 The `dry-run` folder should look like below:
@@ -41,13 +41,13 @@ The `dry-run` folder should look like below:
 $ tree -La 3 dry-run
 dry-run
 ├── 7.4.3.6-ga6
-│   ├── jdk11-buster
+│   ├── jdk11-bullseye
 │   │   ├── docker-entrypoint.sh
 │   │   └── Dockerfile
 │   ├── jdk8-alpine
 │   │   ├── docker-entrypoint.sh
 │   │   └── Dockerfile
-│   └── jdk8-buster
+│   └── jdk8-bullseye
 │       ├── docker-entrypoint.sh
 │       └── Dockerfile
 ├── README.md
@@ -57,24 +57,24 @@ dry-run
 Build images for each corresponding Dockerfile:
 ```shell
 $ docker build --rm -t dr-7.4.3.6-ga6-jdk8-alpine dry-run/7.4.3.6-ga6/jdk8-alpine
-$ docker build --rm -t dr-7.4.3.6-ga6-jdk8-buster dry-run/7.4.3.6-ga6/jdk8-buster
-$ docker build --rm -t dr-7.4.3.6-ga6-jdk11-buster dry-run/7.4.3.6-ga6/jdk11-buster
+$ docker build --rm -t dr-7.4.3.6-ga6-jdk8-bullseye dry-run/7.4.3.6-ga6/jdk8-bullseye
+$ docker build --rm -t dr-7.4.3.6-ga6-jdk11-bullseye dry-run/7.4.3.6-ga6/jdk11-bullseye
 ```
 
 List images:
 ```shell
 $ dils
 REPOSITORY                       TAG                      IMAGE ID            CREATED             SIZE
-dr-7.4.3.6-ga6-jdk11-buster        latest                   2c6570687d76        2 days ago          1.46GB
-dr-7.4.3.6-ga6-jdk8-buster         latest                   99c737b17e72        2 days ago          1.35GB
+dr-7.4.3.6-ga6-jdk11-bullseye        latest                   2c6570687d76        2 days ago          1.46GB
+dr-7.4.3.6-ga6-jdk8-bullseye         latest                   99c737b17e72        2 days ago          1.35GB
 dr-7.4.3.6-ga6-jdk8-alpine         latest                   62f046fa8a17        2 days ago          954MB
 ```
 
 Run a container with the corresponding use case for each locally built image and test a Liferay Portal instance at `http://localhost:80`:
 ```shell
 $ script/run-container.sh -t dr-7.4.3.6-ga6-jdk8-alpine -u base
-$ script/run-container.sh -t dr-7.4.3.6-ga6-jdk8-buster -u base
-$ script/run-container.sh -t dr-7.4.3.6-ga6-jdk11-buster -u base
+$ script/run-container.sh -t dr-7.4.3.6-ga6-jdk8-bullseye -u base
+$ script/run-container.sh -t dr-7.4.3.6-ga6-jdk11-bullseye -u base
 ```
 
 Verify logs:
@@ -89,7 +89,7 @@ $ dcsa && dcra
 
 ### Release Images
 
-Release images and publish them to Docker Hub; repeat for each tag variant: `7.4.3.6-ga6/jdk8-alpine`, `7.4.3.6-ga6/jdk8-buster`, and `7.4.3.6-ga6/jdk11-buster` 
+Release images and publish them to Docker Hub; repeat for each tag variant: `7.4.3.6-ga6/jdk8-alpine`, `7.4.3.6-ga6/jdk8-bullseye`, and `7.4.3.6-ga6/jdk11-bullseye` 
 
 * In GitHub, select the `Perform Release` workflow in the `Actions` tab.
 * Click on the `Run workflow` and enter the tag variant in the `Release Version` field.
@@ -98,15 +98,15 @@ Release images and publish them to Docker Hub; repeat for each tag variant: `7.4
 Pull images from Docker Hub:
 ```shell
 $ docker pull ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk8-alpine
-$ docker pull ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk8-buster
-$ docker pull ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk11-buster
+$ docker pull ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk8-bullseye
+$ docker pull ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk11-bullseye
 ```
 
 Run a container with the corresponding use case for each image pulled from Docker Hub and test Liferay Portal:
 ```shell
 $ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk8-alpine -u extended
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk8-buster -u extended
-$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk11-buster -u extended
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk8-bullseye -u extended
+$ script/run-container.sh -t ibaiborodine/liferay-portal-ce:7.4.3.6-ga6-jdk11-bullseye -u extended
 ```
 
 Verify logs:
