@@ -65,9 +65,9 @@ List images:
 ```shell
 $ dils
 REPOSITORY                       TAG                      IMAGE ID            CREATED             SIZE
-dr-7.4.3.7-ga7-jdk11-bullseye        latest                   2c6570687d76        2 days ago          1.46GB
-dr-7.4.3.7-ga7-jdk8-bullseye         latest                   99c737b17e72        2 days ago          1.35GB
-dr-7.4.3.7-ga7-jdk8-alpine         latest                   62f046fa8a17        2 days ago          954MB
+dr-7.4.3.7-ga7-jdk11-bullseye    latest                   2c6570687d76        2 days ago          1.46GB
+dr-7.4.3.7-ga7-jdk8-bullseye     latest                   99c737b17e72        2 days ago          1.35GB
+dr-7.4.3.7-ga7-jdk8-alpine       latest                   62f046fa8a17        2 days ago          954MB
 ```
 
 Run a container with the corresponding use case for each locally built image and test a Liferay Portal instance at `http://localhost:80`:
