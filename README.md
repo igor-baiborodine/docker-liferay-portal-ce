@@ -9,6 +9,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
+-  [`7.4.3.10-ga10-jdk8-bullseye` (*7.4.3.10-ga10/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/062d5e1ae5691d6fc12612e0cd1aaa81dea57abf/7.4.3.10-ga10/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.10-ga10-jdk8-alpine` (*7.4.3.10-ga10/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/3caa24f04ac2d78150b1c0230f6eae8ccf40a4a0/7.4.3.10-ga10/jdk8-alpine/Dockerfile)
 
 `Dockerfile` links for previously supported tags can be found [here](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/readme/previously-supported-tags.md).
