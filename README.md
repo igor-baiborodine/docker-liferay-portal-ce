@@ -1,14 +1,15 @@
 # docker-liferay-portal-ce 
 
+### Developed with Pleasure!
+![IntelliJ IDEA Logo](https://www.kiroule.com/img/content/page/projects/intellij-idea-logo.png)
+
 # [Docker Hub Repository](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
 
 ### [Release Image Manual](/readme/release-image-manual.md)
 
 # Supported tags and respective `Dockerfile` links
 
--  [`7.4.3.16-ga16-jdk11-bullseye, latest` (*7.4.3.16-ga16/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/c442cb3487115f6dc951984313388eb9dea10d4d/7.4.3.16-ga16/jdk11-bullseye/Dockerfile)
--  [`7.4.3.16-ga16-jdk8-bullseye` (*7.4.3.16-ga16/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/544cd07e8bf27335e681f6d5aa836e10934fb8ba/7.4.3.16-ga16/jdk8-bullseye/Dockerfile)
--  [`7.4.3.16-ga16-jdk8-alpine` (*7.4.3.16-ga16/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/f01d1c3a0a0aebc137958a298c935d4b3be6b1f4/7.4.3.16-ga16/jdk8-alpine/Dockerfile)
+-  [`7.4.3.17-ga17-jdk8-alpine` (*7.4.3.17-ga17/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/9af3438d014e29ba89ccb370322e2ccf5915a342/7.4.3.17-ga17/jdk8-alpine/Dockerfile)
 
 `Dockerfile` links for previously supported tags can be found [here](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/readme/previously-supported-tags.md).
 
