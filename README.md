@@ -18,7 +18,7 @@
 # Quick reference
 
 -	**Where to get help**:  
-	[the Liferay Community Forums](https://liferay.dev/forums/-/message_boards/category/243728), [the Docker Community Forums](https://forums.docker.com/), [the Docker Community Slack](https://blog.docker.com/2016/11/introducing-docker-community-directory-docker-community-slack/), or [Stack Overflow](https://stackoverflow.com/search?tab=newest&q=docker)
+	[the Liferay Community Forums](https://liferay.dev/en/forums-redirect/-/message_boards/category/120181602), [the Docker Community Forums](https://forums.docker.com/), [the Docker Community Slack](https://blog.docker.com/2016/11/introducing-docker-community-directory-docker-community-slack/), or [Stack Overflow](https://stackoverflow.com/search?tab=newest&q=docker)
 
 -	**Where to file issues**:  
 	[https://github.com/igor-baiborodine/docker-liferay-portal-ce/issues](https://github.com/igor-baiborodine/docker-liferay-portal-ce/issues)
