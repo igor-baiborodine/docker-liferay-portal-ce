@@ -89,7 +89,10 @@ $ dcsa && dcra
 
 ### Release Images
 
-Release images and publish them to Docker Hub; repeat for each tag variant: `7.4.3.18-ga18/jdk8-alpine`, `7.4.3.18-ga18/jdk8-bullseye`, and `7.4.3.18-ga18/jdk11-bullseye` 
+Release images and publish them to Docker Hub; repeat for each tag variant: 
+1. `7.4.3.18-ga18/jdk8-alpine`
+2. `7.4.3.18-ga18/jdk8-bullseye`
+3. `7.4.3.18-ga18/jdk11-bullseye` 
 
 * In GitHub, select the `Perform Release` workflow in the `Actions` tab.
 * Click on the `Run workflow` and enter the tag variant in the `Release Version` field.
