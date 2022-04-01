@@ -1,21 +1,22 @@
 # docker-liferay-portal-ce 
 
+### Developed with Pleasure!
+![IntelliJ IDEA Logo](https://www.kiroule.com/img/content/page/projects/intellij-idea-logo.png)
+
 # [Docker Hub Repository](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
 
 ### [Release Image Manual](/readme/release-image-manual.md)
 
 # Supported tags and respective `Dockerfile` links
 
--  [`7.4.3.17-ga17-jdk11-bullseye, latest` (*7.4.3.17-ga17/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/590517479cf77f7c9185a55c4f4ba3416ad87316/7.4.3.17-ga17/jdk11-bullseye/Dockerfile)
--  [`7.4.3.17-ga17-jdk8-bullseye` (*7.4.3.17-ga17/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/1b226fb2e9a5710bac66572c0095dc552354369f/7.4.3.17-ga17/jdk8-bullseye/Dockerfile)
--  [`7.4.3.17-ga17-jdk8-alpine` (*7.4.3.17-ga17/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/9af3438d014e29ba89ccb370322e2ccf5915a342/7.4.3.17-ga17/jdk8-alpine/Dockerfile)
+-  [`7.4.3.18-ga18-jdk8-alpine` (*7.4.3.18-ga18/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/4ef138024f14207982f1fa994cb304e1ecd7447b/7.4.3.18-ga18/jdk8-alpine/Dockerfile)
 
 `Dockerfile` links for previously supported tags can be found [here](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/readme/previously-supported-tags.md).
 
 # Quick reference
 
 -	**Where to get help**:  
-	[the Liferay Community Forums](https://liferay.dev/en/forums-redirect/-/message_boards/category/120181602), [the Docker Community Forums](https://forums.docker.com/), [the Docker Community Slack](https://blog.docker.com/2016/11/introducing-docker-community-directory-docker-community-slack/), or [Stack Overflow](https://stackoverflow.com/search?tab=newest&q=docker)
+	[the Liferay Community Forums](https://liferay.dev/forums/-/message_boards/category/243728), [the Docker Community Forums](https://forums.docker.com/), [the Docker Community Slack](https://blog.docker.com/2016/11/introducing-docker-community-directory-docker-community-slack/), or [Stack Overflow](https://stackoverflow.com/search?tab=newest&q=docker)
 
 -	**Where to file issues**:  
 	[https://github.com/igor-baiborodine/docker-liferay-portal-ce/issues](https://github.com/igor-baiborodine/docker-liferay-portal-ce/issues)
