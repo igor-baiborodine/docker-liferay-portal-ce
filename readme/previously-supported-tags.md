@@ -1,62 +1,67 @@
 # Previously supported tags and respective `Dockerfile` links
 
+### 7.4.3.18-ga18
+-  [`7.4.3.18-ga18-jdk11-bullseye` (*7.4.3.18-ga18/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/8a2f9c44e35e2c664533f5381c7d3c90c000cba5/7.4.3.18-ga18/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.18-ga18-jdk8-bullseye` (*7.4.3.18-ga18/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/ec5a1dede67a143aa7c079ad7934b45a72b742c7/7.4.3.18-ga18/jdk8-bullseye/Dockerfile)
+-  [`7.4.3.18-ga18-jdk8-alpine` (*7.4.3.18-ga18/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/4ef138024f14207982f1fa994cb304e1ecd7447b/7.4.3.18-ga18/jdk8-alpine/Dockerfile)
+
 ### 7.4.3.17-ga17
--  [`7.4.3.17-ga17-jdk11-bullseye, latest` (*7.4.3.17-ga17/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/590517479cf77f7c9185a55c4f4ba3416ad87316/7.4.3.17-ga17/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.17-ga17-jdk11-bullseye` (*7.4.3.17-ga17/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/590517479cf77f7c9185a55c4f4ba3416ad87316/7.4.3.17-ga17/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.17-ga17-jdk8-bullseye` (*7.4.3.17-ga17/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/1b226fb2e9a5710bac66572c0095dc552354369f/7.4.3.17-ga17/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.17-ga17-jdk8-alpine` (*7.4.3.17-ga17/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/9af3438d014e29ba89ccb370322e2ccf5915a342/7.4.3.17-ga17/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.16-ga16
--  [`7.4.3.16-ga16-jdk11-bullseye, latest` (*7.4.3.16-ga16/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/c442cb3487115f6dc951984313388eb9dea10d4d/7.4.3.16-ga16/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.16-ga16-jdk11-bullseye` (*7.4.3.16-ga16/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/c442cb3487115f6dc951984313388eb9dea10d4d/7.4.3.16-ga16/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.16-ga16-jdk8-bullseye` (*7.4.3.16-ga16/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/544cd07e8bf27335e681f6d5aa836e10934fb8ba/7.4.3.16-ga16/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.16-ga16-jdk8-alpine` (*7.4.3.16-ga16/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/f01d1c3a0a0aebc137958a298c935d4b3be6b1f4/7.4.3.16-ga16/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.15-ga15
--  [`7.4.3.15-ga15-jdk11-bullseye, latest` (*7.4.3.15-ga15/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/5be46d327a7229df2ca4e4040c31fc2536461681/7.4.3.15-ga15/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.15-ga15-jdk11-bullseye` (*7.4.3.15-ga15/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/5be46d327a7229df2ca4e4040c31fc2536461681/7.4.3.15-ga15/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.15-ga15-jdk8-bullseye` (*7.4.3.15-ga15/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/8a02072183f9495c9a89afba285ebd252c52c655/7.4.3.15-ga15/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.15-ga15-jdk8-alpine` (*7.4.3.15-ga15/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/72c7b890a959ee4f1a995e5a5a650c1333837823/7.4.3.15-ga15/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.14-ga14
--  [`7.4.3.14-ga14-jdk11-bullseye, latest` (*7.4.3.14-ga14/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/da21391265e6435d02157d6bb83c04db7120ae3f/7.4.3.14-ga14/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.14-ga14-jdk11-bullseye` (*7.4.3.14-ga14/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/da21391265e6435d02157d6bb83c04db7120ae3f/7.4.3.14-ga14/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.14-ga14-jdk8-bullseye` (*7.4.3.14-ga14/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/3c5852f0d2c81142bcd1cada43804df3e5def624/7.4.3.14-ga14/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.14-ga14-jdk8-alpine` (*7.4.3.14-ga14/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/9bba53107744f3392bd73110129b939fc6ecfc57/7.4.3.14-ga14/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.13-ga13
--  [`7.4.3.13-ga13-jdk11-bullseye, latest` (*7.4.3.13-ga13/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/e76bcaae98245a85e3c49000ba59258ce48f0105/7.4.3.13-ga13/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.13-ga13-jdk11-bullseye` (*7.4.3.13-ga13/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/e76bcaae98245a85e3c49000ba59258ce48f0105/7.4.3.13-ga13/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.13-ga13-jdk8-bullseye` (*7.4.3.13-ga13/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/b93f5fdb36c3b11cf1f1acc4563fb40c81ff1cd2/7.4.3.13-ga13/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.13-ga13-jdk8-alpine` (*7.4.3.13-ga13/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/97fd7337308b7cb565183799a3a843c14ec4e91d/7.4.3.13-ga13/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.12-ga12
--  [`7.4.3.12-ga12-jdk11-bullseye, latest` (*7.4.3.12-ga12/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/102b181feb21c3db688a2daa1fc15b4ae5f8a21f/7.4.3.12-ga12/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.12-ga12-jdk11-bullseye` (*7.4.3.12-ga12/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/102b181feb21c3db688a2daa1fc15b4ae5f8a21f/7.4.3.12-ga12/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.12-ga12-jdk8-bullseye` (*7.4.3.12-ga12/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/e9a3c0e9d170590bf79559bec306043fcb54fd22/7.4.3.12-ga12/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.12-ga12-jdk8-alpine` (*7.4.3.12-ga12/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/bac6f1794868e9b2e853d5d03edc659f2baadcbf/7.4.3.12-ga12/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.11-ga11
--  [`7.4.3.11-ga11-jdk11-bullseye, latest` (*7.4.3.11-ga11/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/cf41203b83aae7d36c8de4e997f2f1b1fb5e5dcf/7.4.3.11-ga11/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.11-ga11-jdk11-bullseye` (*7.4.3.11-ga11/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/cf41203b83aae7d36c8de4e997f2f1b1fb5e5dcf/7.4.3.11-ga11/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.11-ga11-jdk8-bullseye` (*7.4.3.11-ga11/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/f6a98b763e86422d1c12abd9f4383327bd4604a1/7.4.3.11-ga11/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.11-ga11-jdk8-alpine` (*7.4.3.11-ga11/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/850a804caca5e84f31fc07c765d82e91af7f564b/7.4.3.11-ga11/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.10-ga10
--  [`7.4.3.10-ga10-jdk11-bullseye, latest` (*7.4.3.10-ga10/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/1bd26adc0d918449a5afef3778bc111da2f35fc2/7.4.3.10-ga10/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.10-ga10-jdk11-bullseye` (*7.4.3.10-ga10/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/1bd26adc0d918449a5afef3778bc111da2f35fc2/7.4.3.10-ga10/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.10-ga10-jdk8-bullseye` (*7.4.3.10-ga10/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/062d5e1ae5691d6fc12612e0cd1aaa81dea57abf/7.4.3.10-ga10/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.10-ga10-jdk8-alpine` (*7.4.3.10-ga10/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/3caa24f04ac2d78150b1c0230f6eae8ccf40a4a0/7.4.3.10-ga10/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.9-ga9
--  [`7.4.3.9-ga9-jdk11-bullseye, latest` (*7.4.3.9-ga9/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/d10779f38c81c999c0e3a9726c7a508f9473f336/7.4.3.9-ga9/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.9-ga9-jdk11-bullseye` (*7.4.3.9-ga9/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/d10779f38c81c999c0e3a9726c7a508f9473f336/7.4.3.9-ga9/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.9-ga9-jdk8-bullseye` (*7.4.3.9-ga9/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/ead6b9a799175a635ace31308f87fb2100297dfa/7.4.3.9-ga9/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.9-ga9-jdk8-alpine` (*7.4.3.9-ga9/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/c22616d22d92297c5e2fac56bfbdc0b4222d8f8e/7.4.3.9-ga9/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.8-ga8
--  [`7.4.3.8-ga8-jdk11-bullseye, latest` (*7.4.3.8-ga8/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/e36de242162d85c36ae4689fb85a860f3808a90c/7.4.3.8-ga8/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.8-ga8-jdk11-bullseye` (*7.4.3.8-ga8/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/e36de242162d85c36ae4689fb85a860f3808a90c/7.4.3.8-ga8/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.8-ga8-jdk8-bullseye` (*7.4.3.8-ga8/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/c3c7a7c3bd62689cf03080b0bce5ae78aa68abc7/7.4.3.8-ga8/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.8-ga8-jdk8-alpine` (*7.4.3.8-ga8/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/268b7fefb727159a46926b14a94e1dde7a05469e/7.4.3.8-ga8/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.7-ga7
--  [`7.4.3.7-ga7-jdk11-bullseye, latest` (*7.4.3.7-ga7/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/7e44de2730984d85e37a47372cb302fe1b238375/7.4.3.7-ga7/jdk11-bullseye/Dockerfile)
+-  [`7.4.3.7-ga7-jdk11-bullseye` (*7.4.3.7-ga7/jdk11-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/7e44de2730984d85e37a47372cb302fe1b238375/7.4.3.7-ga7/jdk11-bullseye/Dockerfile)
 -  [`7.4.3.7-ga7-jdk8-bullseye` (*7.4.3.7-ga7/jdk8-bullseye/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/d086dcc8452d192ff7233ce0069744ee5664fce1/7.4.3.7-ga7/jdk8-bullseye/Dockerfile)
 -  [`7.4.3.7-ga7-jdk8-alpine` (*7.4.3.7-ga7/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/3e2886f76cfbc20b0ca7d4c4bb5594f304d4fed7/7.4.3.7-ga7/jdk8-alpine/Dockerfile)
 
 ### 7.4.3.6-ga6
--  [`7.4.3.6-ga6-jdk11-buster, latest` (*7.4.3.6-ga6/jdk11-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/349ac873f59fbe4264496ab97da77db128fb6e7b/7.4.3.6-ga6/jdk11-buster/Dockerfile)
+-  [`7.4.3.6-ga6-jdk11-buster` (*7.4.3.6-ga6/jdk11-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/349ac873f59fbe4264496ab97da77db128fb6e7b/7.4.3.6-ga6/jdk11-buster/Dockerfile)
 -  [`7.4.3.6-ga6-jdk8-buster` (*7.4.3.6-ga6/jdk8-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/0ba220e13a821f2dded739a4a8d4a6ebc4a10f2a/7.4.3.6-ga6/jdk8-buster/Dockerfile)
 -  [`7.4.3.6-ga6-jdk8-alpine` (*7.4.3.6-ga6/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/3ba3319d58902a1b4e74ae31c8b94cfb17b3214e/7.4.3.6-ga6/jdk8-alpine/Dockerfile)
 
@@ -76,7 +81,7 @@
 -  [`7.4.2-ga3-jdk8-alpine` (*7.4.2-ga3/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/bcb0df5a625dd79a2fc01b1c2d3ef6ee0fad7a69/7.4.2-ga3/jdk8-alpine/Dockerfile)
 
 ### 7.4.1-ga2
--  [`7.4.1-ga2-jdk11-buster, latest` (*7.4.1-ga2/jdk11-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/b3cf9c792b81cf91f34f8d2ce664e565becd773f/7.4.1-ga2/jdk11-buster/Dockerfile)
+-  [`7.4.1-ga2-jdk11-buster` (*7.4.1-ga2/jdk11-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/b3cf9c792b81cf91f34f8d2ce664e565becd773f/7.4.1-ga2/jdk11-buster/Dockerfile)
 -  [`7.4.1-ga2-jdk8-buster` (*7.4.1-ga2/jdk8-buster/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/1ac93ca5d555023607f40f9321471a9808ed0c7c/7.4.1-ga2/jdk8-buster/Dockerfile)
 -  [`7.4.1-ga2-jdk8-alpine` (*7.4.1-ga2/jdk8-alpine/Dockerfile*)](https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/3f937f8cefea4fd231bed83610e8c4528e0acf7b/7.4.1-ga2/jdk8-alpine/Dockerfile)
 
