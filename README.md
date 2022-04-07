@@ -1,8 +1,5 @@
 # docker-liferay-portal-ce 
 
-### Developed with Pleasure!
-![IntelliJ IDEA Logo](https://www.kiroule.com/img/content/page/projects/intellij-idea-logo.png)
-
 # [Docker Hub Repository](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
 
 ### [Release Image Manual](/readme/release-image-manual.md)
