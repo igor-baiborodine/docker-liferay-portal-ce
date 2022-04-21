@@ -7,8 +7,8 @@
 ################################################################################
 FROM openjdk:8-jdk-alpine AS builder
 
-ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.4.3.20-ga20/liferay-ce-portal-tomcat-7.4.3.20-ga20-20220408161249276.tar.gz
-ENV LIFERAY_DOWNLOAD_MD5 21da595eca349554e68fd1a3840a162b
+ENV LIFERAY_DOWNLOAD_URL https://releases.liferay.com/portal/7.4.3.21-ga21/liferay-ce-portal-tomcat-7.4.3.21-ga21-20220418102345052.tar.gz
+ENV LIFERAY_DOWNLOAD_MD5 2125f744483ccfd684ae1d2cf6c3e50a
 
 ADD "$LIFERAY_DOWNLOAD_URL" /tmp/liferay-bundle.tar.gz
 
@@ -29,7 +29,7 @@ LABEL \
     org.label-schema.vcs-url="https://github.com/igor-baiborodine/docker-liferay-portal-ce" \
     org.label-schema.usage="https://github.com/igor-baiborodine/docker-liferay-portal-ce/blob/master/README.md"
 
-ENV LIFERAY_VERSION 7.4.3.20-ga20
+ENV LIFERAY_VERSION 7.4.3.21-ga21
 ENV LIFERAY_HOME /opt/liferay
 ENV LIFERAY_BASE /etc/opt/liferay
 ENV LIFERAY_INIT /docker-entrypoint-initliferay.d
