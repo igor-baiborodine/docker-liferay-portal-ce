@@ -1,3 +1,5 @@
+### This project is no longer maintained
+
 # docker-liferay-portal-ce 
 
 # [Docker Hub Repository](https://hub.docker.com/r/ibaiborodine/liferay-portal-ce)
